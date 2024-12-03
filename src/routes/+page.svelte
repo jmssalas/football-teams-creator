@@ -104,22 +104,34 @@
             <Row>
                 <Column>
                     <h2>Equipo 1</h2>
-                    {#each teams.team1.players as player}
+                    {#each teams.team1 as player}
                         <p>{player.name}</p>
                     {/each}
+                    <p>
+                        Puntos totales: {teams.team1.reduce(
+                            (acc, curr) => acc + curr.points,
+                            0
+                        )}
+                    </p>
 
-                    <Button on:click={() => win(teams.team1.players)}>
+                    <Button on:click={() => win(teams.team1)}>
                         Gana equipo 1
                     </Button>
                 </Column>
 
                 <Column>
                     <h2>Equipo 2</h2>
-                    {#each teams.team2.players as player}
+                    {#each teams.team2 as player}
                         <p>{player.name}</p>
                     {/each}
+                    <p>
+                        Puntos totales: {teams.team2.reduce(
+                            (acc, curr) => acc + curr.points,
+                            0
+                        )}
+                    </p>
 
-                    <Button on:click={() => win(teams.team2.players)}>
+                    <Button on:click={() => win(teams.team2)}>
                         Gana equipo 2
                     </Button>
                 </Column>

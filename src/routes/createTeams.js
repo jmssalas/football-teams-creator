@@ -4,52 +4,43 @@ const MAX_POINTS_DIFF = 2;
 
 /**
  * @param {Player[]} players
+ * @returns {{ team1: Player[], team2: Player[]}}
  */
 export function createTeams(players) {
-    const shuffledPlayers = shuffle(players);
-    const teams = {
-        team1: {
-            players: [],
-            points: 0,
-        },
-        team2: {
-            players: [],
-            points: 0,
-        },
-    };
+    let bestDivision = null;
+    let minDifference = Infinity;
 
-    teams.team1.players.push(shuffledPlayers.pop());
-    teams.team2.players.push(shuffledPlayers.pop());
-    teams.team1.points = teams.team1.players[0].points;
-    teams.team2.points = teams.team2.players[0].points;
-
-    let lastDiff = 0;
-    for (const player of shuffledPlayers) {
-        const diff = Math.abs(
-            teams.team1.points + player.points - teams.team2.points
-        );
-        let team = undefined;
-
-        if (diff === lastDiff) {
-            team =
-                teams.team1.players.length < teams.team2.players.length
-                    ? "team1"
-                    : "team2";
-        } else {
-            team = diff < MAX_POINTS_DIFF ? "team1" : "team2";
+    function backtrack(index, team1, team2, pointsA, pointsB) {
+        // Restringir la diferencia de tamaño entre los equipos a máximo 1 jugador
+        if (Math.abs(team1.length - team2.length) > 1) {
+            return;
         }
 
-        teams[team].players.push(player);
-        teams[team].points += player.points;
+        // Si hemos procesado todos los jugadores
+        if (index >= players.length) {
+            const difference = Math.abs(pointsA - pointsB);
+            if (difference < minDifference) {
+                minDifference = difference;
+                bestDivision = { team1: [...team1], team2: [...team2] };
+            }
+            return;
+        }
 
-        lastDiff = diff;
+        const player = players[index];
+
+        // Intentar agregar al equipo A
+        team1.push(player);
+        backtrack(index + 1, team1, team2, pointsA + player.points, pointsB);
+        team1.pop();
+
+        // Intentar agregar al equipo B
+        team2.push(player);
+        backtrack(index + 1, team1, team2, pointsA, pointsB + player.points);
+        team2.pop();
     }
-    return teams;
-}
 
-const shuffle = (array) => {
-    return array
-        .map((a) => ({ sort: Math.random(), value: a }))
-        .sort((a, b) => a.sort - b.sort)
-        .map((a) => a.value);
-};
+    // Inicializar backtracking
+    backtrack(0, [], [], 0, 0);
+
+    return bestDivision;
+}
