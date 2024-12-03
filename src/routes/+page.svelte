@@ -16,7 +16,7 @@
         Row,
         Column,
     } from "carbon-components-svelte";
-    import { Add, TrashCan } from "carbon-icons-svelte";
+    import { Add, Renew, TrashCan } from "carbon-icons-svelte";
     import { createTeams } from "./createTeams.js";
 
     /** @type {import('./$types').PageData} */
@@ -48,51 +48,15 @@
         teams = undefined;
         invalidateAll();
     }
+
+    async function refreshPoints() {
+        await fetch("/", { method: "DELETE" });
+        teams = undefined;
+        invalidateAll();
+    }
 </script>
 
 <Content>
-    <DataTable
-        size="compact"
-        headers={[
-            { key: "name", value: "Nombre" },
-            { key: "points", value: "Puntos" },
-            { key: "buttons", value: "" },
-        ]}
-        {rows}
-    >
-        <Toolbar>
-            <ToolbarContent>
-                <Button
-                    icon={Add}
-                    iconDescription="Añadir jugador"
-                    on:click={() => {
-                        open = true;
-                    }}
-                />
-            </ToolbarContent>
-        </Toolbar>
-
-        <svelte:fragment slot="cell" let:row let:cell>
-            {#if cell.key === "buttons"}
-                <Button
-                    tooltipPosition="right"
-                    tooltipAlignment="end"
-                    kind="danger-ghost"
-                    iconDescription="Eliminar jugador"
-                    icon={TrashCan}
-                    on:click={() => {
-                        player = row;
-                        open = true;
-                    }}
-                />
-            {:else}
-                {cell.value ?? ""}
-            {/if}
-        </svelte:fragment>
-    </DataTable>
-
-    <br />
-
     <Button on:click={() => (teams = createTeams(rows))}>Crear equipos</Button>
 
     <br />
@@ -138,6 +102,57 @@
             </Row>
         </Grid>
     {/if}
+
+    <br />
+    <br />
+    <br />
+
+    <DataTable
+        size="compact"
+        headers={[
+            { key: "name", value: "Nombre" },
+            { key: "points", value: "Puntos" },
+            { key: "buttons", value: "" },
+        ]}
+        {rows}
+    >
+        <Toolbar>
+            <Button
+                icon={Add}
+                iconDescription="Añadir jugador"
+                on:click={() => {
+                    open = true;
+                }}>Añadir jugador</Button
+            >
+        </Toolbar>
+
+        <svelte:fragment slot="cell" let:row let:cell>
+            {#if cell.key === "buttons"}
+                <Button
+                    tooltipPosition="right"
+                    tooltipAlignment="end"
+                    kind="danger-ghost"
+                    iconDescription="Eliminar jugador"
+                    icon={TrashCan}
+                    on:click={() => {
+                        player = row;
+                        open = true;
+                    }}
+                />
+            {:else}
+                {cell.value ?? ""}
+            {/if}
+        </svelte:fragment>
+    </DataTable>
+
+    <br />
+
+    <Button
+        icon={Renew}
+        on:click={() => {
+            refreshPoints();
+        }}>Reinicializar puntuación</Button
+    >
 </Content>
 
 <Modal

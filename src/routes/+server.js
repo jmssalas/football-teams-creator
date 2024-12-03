@@ -14,6 +14,12 @@ export async function POST({ request }) {
     return json(true);
 }
 
+/** @type {import('./$types').RequestHandler} */
+export async function DELETE({ request }) {
+    await db.update(players).set({ points: 0 });
+    return json(true);
+}
+
 /**
  * @param {Player[]} wPlayers
  */
