@@ -2,6 +2,7 @@
 
 import { db } from "$lib/server/db/index.js";
 import { players } from "$lib/server/db/schema.js";
+import { eq } from "drizzle-orm";
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }) {
@@ -15,6 +16,12 @@ export async function load({ params }) {
 export const actions = {
     create: async ({ request }) => {
         const data = await request.formData();
-        // @TODO
+        return db.insert(players).values({
+            name: data.get("player-name"),
+        });
+    },
+    delete: async ({ request }) => {
+        const data = await request.formData();
+        return db.delete(players).where(eq(players.id, data.get("player-id")));
     },
 };
