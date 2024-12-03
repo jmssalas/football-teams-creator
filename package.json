@@ -20,6 +20,7 @@
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
 		"@types/better-sqlite3": "^7.6.11",
 		"carbon-components-svelte": "^0.86.2",
+		"carbon-icons-svelte": "^12.13.0",
 		"drizzle-kit": "^0.22.0",
 		"prettier": "^3.3.2",
 		"prettier-plugin-svelte": "^3.2.6",

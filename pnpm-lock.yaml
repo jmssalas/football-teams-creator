@@ -30,6 +30,9 @@ importers:
       carbon-components-svelte:
         specifier: ^0.86.2
         version: 0.86.2
+      carbon-icons-svelte:
+        specifier: ^12.13.0
+        version: 12.13.0
       drizzle-kit:
         specifier: ^0.22.0
         version: 0.22.8
@@ -674,6 +677,9 @@ packages:
 
   carbon-components-svelte@0.86.2:
     resolution: {integrity: sha512-0bZcjWAWhXsPBLf+93eTJw6S69ZsdzFyQ7XFi8Aunx0Q9HBtuaelRr2SODzKhwtn5ha0fyX5pEgIUaY9bRMd5w==}
+
+  carbon-icons-svelte@12.13.0:
+    resolution: {integrity: sha512-Tkp5Aa34GgAIQ5XSpD0JIKZTqiTUgtIt43SZxXuSDYvQjQ+HQVKNgYiDZ3oAA5etdcGT4O8+vDsVdGeL90Eezg==}
 
   chokidar@4.0.1:
     resolution: {integrity: sha512-n8enUVCED/KVRQlab1hr3MVpcVMvxtZjmEa956u+4YijlmQED223XMSYj2tLuKvr4jcCTzNNMpQDUer72MMmzA==}
@@ -1512,6 +1518,8 @@ snapshots:
     dependencies:
       '@ibm/telemetry-js': 1.8.0
       flatpickr: 4.6.9
+
+  carbon-icons-svelte@12.13.0: {}
 
   chokidar@4.0.1:
     dependencies:
