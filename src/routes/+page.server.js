@@ -6,9 +6,8 @@ import { eq } from "drizzle-orm";
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }) {
-    const users = await db.select().from(players);
     return {
-        users,
+        players: await db.select().from(players),
     };
 }
 

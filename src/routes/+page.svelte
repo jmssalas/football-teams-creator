@@ -13,11 +13,12 @@
         TextInput,
     } from "carbon-components-svelte";
     import { Add, TrashCan } from "carbon-icons-svelte";
+    import { createTeams } from "./createTeams.js";
 
     /** @type {import('./$types').PageData} */
     export let data;
 
-    let rows = data.users;
+    let rows = data.players;
     let open = false;
     let player = undefined;
     let action;
