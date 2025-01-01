@@ -30,6 +30,7 @@
 		"vite": "^6.0.0"
 	},
 	"dependencies": {
+		"@sveltejs/adapter-node": "^5.2.11",
 		"better-sqlite3": "^11.1.2",
 		"drizzle-orm": "^0.33.0"
 	}
