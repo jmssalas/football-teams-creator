@@ -6,11 +6,13 @@ import { json } from "@sveltejs/kit";
 import { eq } from "drizzle-orm";
 
 const WIN_POINTS = 3;
+const TIE_POINTS = 1;
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ request }) {
-    const { players } = await request.json();
-    await win(players);
+    const { players, tie } = await request.json();
+    const points = tie ? TIE_POINTS : WIN_POINTS;
+    await win(players, points);
     return json(true);
 }
 
@@ -22,10 +24,11 @@ export async function DELETE({ request }) {
 
 /**
  * @param {Player[]} wPlayers
+ * @param {number} points
  */
-async function win(wPlayers) {
+async function win(wPlayers, points) {
     for (const player of wPlayers) {
-        player.points += WIN_POINTS;
+        player.points += points;
         await db.update(players).set(player).where(eq(players.id, player.id));
     }
 }

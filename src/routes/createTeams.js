@@ -7,6 +7,9 @@ const MAX_POINTS_DIFF = 2;
  * @returns {{ team1: Player[], team2: Player[]}}
  */
 export function createTeams(players) {
+    // Randomize players
+    players.sort(() => Math.random() - 0.5);
+
     let bestDivision = null;
     let minDifference = Infinity;
 

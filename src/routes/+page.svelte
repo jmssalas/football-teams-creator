@@ -29,18 +29,22 @@
     let buttonText;
     let kind;
     let teams;
+    let selectedRowIds = [];
 
     $: rows = data.players;
+    $: players = data.players.filter((player) =>
+        selectedRowIds.includes(player.id)
+    );
     $: {
         action = player ? "?/delete" : "?/create";
         buttonText = player ? "Eliminar jugador" : "Añadir jugador";
         kind = player ? "danger" : "primary";
     }
 
-    async function win(players) {
+    async function win(players, tie = false) {
         await fetch("/", {
             method: "POST",
-            body: JSON.stringify({ players }),
+            body: JSON.stringify({ players, tie }),
             headers: {
                 "content-type": "application/json",
             },
@@ -57,7 +61,10 @@
 </script>
 
 <Content>
-    <Button on:click={() => (teams = createTeams(rows))}>Crear equipos</Button>
+    <Button
+        disabled={players.length === 0}
+        on:click={() => (teams = createTeams(players))}>Crear equipos</Button
+    >
 
     <br />
     <br />
@@ -71,11 +78,15 @@
                     {#each teams.team1 as player}
                         <p>{player.name}</p>
                     {/each}
+                    <br />
+                    <br />
                     <p>
-                        Puntos totales: {teams.team1.reduce(
-                            (acc, curr) => acc + curr.points,
-                            0
-                        )}
+                        <strong>
+                            Puntos totales: {teams.team1.reduce(
+                                (acc, curr) => acc + curr.points,
+                                0
+                            )}
+                        </strong>
                     </p>
 
                     <Button on:click={() => win(teams.team1)}>
@@ -88,16 +99,32 @@
                     {#each teams.team2 as player}
                         <p>{player.name}</p>
                     {/each}
+                    <br />
+                    <br />
                     <p>
-                        Puntos totales: {teams.team2.reduce(
-                            (acc, curr) => acc + curr.points,
-                            0
-                        )}
+                        <strong>
+                            Puntos totales: {teams.team2.reduce(
+                                (acc, curr) => acc + curr.points,
+                                0
+                            )}
+                        </strong>
                     </p>
 
                     <Button on:click={() => win(teams.team2)}>
                         Gana equipo 2
                     </Button>
+                </Column>
+            </Row>
+
+            <br />
+            <br />
+            <Row>
+                <Column>
+                    <Button
+                        on:click={() =>
+                            win([...teams.team1, ...teams.team2], true)}
+                        >Empate</Button
+                    >
                 </Column>
             </Row>
         </Grid>
@@ -108,6 +135,10 @@
     <br />
 
     <DataTable
+        sortable
+        selectable
+        batchSelection
+        bind:selectedRowIds
         size="compact"
         headers={[
             { key: "name", value: "Nombre" },
@@ -146,8 +177,12 @@
     </DataTable>
 
     <br />
+    <br />
+    <br />
 
     <Button
+        kind="danger"
+        size="small"
         icon={Renew}
         on:click={() => {
             refreshPoints();
