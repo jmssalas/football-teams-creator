@@ -2,7 +2,6 @@
     // @ts-nocheck
 
     import { invalidateAll } from "$app/navigation";
-    import "carbon-components-svelte/css/white.css";
     import {
         Button,
         Content,
