@@ -744,8 +744,8 @@ function _layout($$payload, $$props) {
     });
     $$payload2.out += `<!----> `;
     Header($$payload2, {
-      company: "Pozo Alcón",
-      platformName: "Peña de Fútbol",
+      company: "Peña de Fútbol",
+      platformName: "Sierra del Pozo",
       children: ($$payload3) => {
         HeaderUtilities($$payload3, {
           children: ($$payload4) => {
@@ -780,4 +780,4 @@ function _layout($$payload, $$props) {
 }
 
 export { _layout as default };
-//# sourceMappingURL=_layout.svelte-D1-WhWGv.js.map
+//# sourceMappingURL=_layout.svelte-BmX9ISuT.js.map

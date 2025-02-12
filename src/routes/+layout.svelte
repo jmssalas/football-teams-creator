@@ -16,7 +16,7 @@
 
 <Theme bind:theme persist />
 
-<Header company="Pozo Alcón" platformName="Peña de Fútbol">
+<Header company="Peña de Fútbol" platformName="Sierra del Pozo">
     <svelte:fragment slot="skip-to-content">
         <SkipToContent />
     </svelte:fragment>
