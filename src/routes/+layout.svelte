@@ -30,6 +30,4 @@
     </HeaderUtilities>
 </Header>
 
-<Content>
-    <slot />
-</Content>
+<slot />
