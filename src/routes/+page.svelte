@@ -235,7 +235,7 @@
 <Modal bind:open={openPoints} passiveModal>
     <Form method="POST" action="?/addPoints" on:submit>
         <input hidden name="players" value={JSON.stringify(players)} />
-        <NumberInput required name="points" label="Puntos" min={1} value={1} />
+        <NumberInput required name="points" label="Puntos" value={0} />
         <Button type="submit">Añadir puntos</Button>
     </Form>
 </Modal>
