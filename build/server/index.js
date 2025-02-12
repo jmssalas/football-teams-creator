@@ -1,5 +1,5 @@
-import { r as render, g as get, L as LEGACY_PROPS, f as flush_sync, d as define_property, a as active_reaction, i as is_runes, D as DERIVED, B as BLOCK_EFFECT, b as derived_sources, s as state_unsafe_mutation, c as increment_version, e as DIRTY, h as set_signal_status, C as CLEAN, U as UNOWNED, j as schedule_effect, k as init_operations, l as get_first_child, H as HYDRATION_START, m as get_next_sibling, n as HYDRATION_ERROR, o as HYDRATION_END, p as hydration_failed, q as clear_text_content, t as array_from, u as effect_root, v as push, w as setContext, x as pop, y as active_effect, z as BRANCH_EFFECT, A as new_deps, E as untracked_writes, F as set_untracked_writes, M as MAYBE_DIRTY, G as set_active_reaction, I as set_active_effect, J as is_array, K as is_passive_event, N as create_text, O as branch, P as push$1, Q as pop$1, R as component_context, S as BROWSER } from './chunks/index-9fQtdOsf.js';
-import { s as safe_equals, e as equals, w as writable, r as readable } from './chunks/index3-B3IIhYL9.js';
+import { r as render, g as get, L as LEGACY_PROPS, f as flush_sync, d as define_property, a as active_reaction, i as is_runes, D as DERIVED, B as BLOCK_EFFECT, b as derived_sources, s as state_unsafe_mutation, c as increment_version, e as DIRTY, h as set_signal_status, C as CLEAN, U as UNOWNED, j as schedule_effect, k as init_operations, l as get_first_child, H as HYDRATION_START, m as get_next_sibling, n as HYDRATION_ERROR, o as HYDRATION_END, p as hydration_failed, q as clear_text_content, t as array_from, u as effect_root, v as push, w as setContext, x as pop, y as active_effect, z as BRANCH_EFFECT, A as new_deps, E as untracked_writes, F as set_untracked_writes, M as MAYBE_DIRTY, G as set_active_reaction, I as set_active_effect, J as is_array, K as is_passive_event, N as create_text, O as branch, P as push$1, Q as pop$1, R as component_context, S as BROWSER } from './chunks/index-BvDmcFIb.js';
+import { s as safe_equals, e as equals, w as writable, r as readable } from './chunks/index3-WH4QjdxO.js';
 import { j as json, t as text } from './chunks/index2-BIAFQWR9.js';
 import { d as decode_pathname, h as has_data_suffix, s as strip_data_suffix, a as decode_params, n as normalize_path, b as disable_search, c as add_data_suffix, m as make_trackable, r as resolve } from './chunks/exports-CTha0ECg.js';
 
@@ -605,7 +605,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "3yq2l1"
+  version_hash: "1b6tfkl"
 };
 async function get_hooks() {
   return {};
