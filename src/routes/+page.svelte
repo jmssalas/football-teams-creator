@@ -18,6 +18,7 @@
     } from "carbon-components-svelte";
     import {
         Add,
+        CircleFilled,
         FaceActivatedAdd,
         Renew,
         TrashCan,
@@ -30,6 +31,7 @@
     let rows;
     let open = false;
     let openPoints = false;
+    let openGoals = false;
     let player = undefined;
     let action;
     let buttonText;
@@ -153,6 +155,7 @@
         headers={[
             { key: "name", value: "Nombre" },
             { key: "points", value: "Puntos" },
+            { key: "goals", value: "Goles" },
             { key: "buttons", value: "" },
         ]}
         {rows}
@@ -173,6 +176,15 @@
                 on:click={() => {
                     openPoints = true;
                 }}>Añadir puntos</Button
+            >
+
+            <Button
+                disabled={players.length === 0}
+                icon={CircleFilled}
+                iconDescription="Añadir goles"
+                on:click={() => {
+                    openGoals = true;
+                }}>Añadir goles</Button
             >
         </Toolbar>
 
@@ -237,5 +249,13 @@
         <input hidden name="players" value={JSON.stringify(players)} />
         <NumberInput required name="points" label="Puntos" value={0} />
         <Button type="submit">Añadir puntos</Button>
+    </Form>
+</Modal>
+
+<Modal bind:open={openGoals} passiveModal>
+    <Form method="POST" action="?/addGoals" on:submit>
+        <input hidden name="players" value={JSON.stringify(players)} />
+        <NumberInput required name="goals" label="Goles" value={0} />
+        <Button type="submit">Añadir goles</Button>
     </Form>
 </Modal>

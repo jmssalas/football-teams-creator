@@ -36,4 +36,17 @@ export const actions = {
             )
         );
     },
+    addGoals: async ({ request }) => {
+        const data = await request.formData();
+        const playersToUpdate = JSON.parse(data.get("players"));
+        const goals = Number.parseInt(data.get("goals"));
+        return Promise.all(
+            playersToUpdate.map(async (player) =>
+                db
+                    .update(players)
+                    .set({ goals: player.goals + goals })
+                    .where(eq(players.id, player.id))
+            )
+        );
+    },
 };
