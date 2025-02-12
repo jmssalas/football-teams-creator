@@ -1851,7 +1851,9 @@ function _page($$payload, $$props) {
           rows,
           children: ($$payload4) => {
             Toolbar($$payload4, {
+              size: "sm",
               children: ($$payload5) => {
+                $$payload5.out += `<span>`;
                 Button($$payload5, {
                   icon: Add,
                   iconDescription: "Añadir jugador",
@@ -1880,7 +1882,7 @@ function _page($$payload, $$props) {
                   },
                   $$slots: { default: true }
                 });
-                $$payload5.out += `<!---->`;
+                $$payload5.out += `<!----></span>`;
               },
               $$slots: { default: true }
             });
@@ -2039,4 +2041,4 @@ function _page($$payload, $$props) {
 }
 
 export { _page as default };
-//# sourceMappingURL=_page.svelte-C1_iAp6a.js.map
+//# sourceMappingURL=_page.svelte-CXstBAS3.js.map

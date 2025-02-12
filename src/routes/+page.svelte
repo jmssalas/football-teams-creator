@@ -160,32 +160,32 @@
         ]}
         {rows}
     >
-        <Toolbar>
-            <Button
-                icon={Add}
-                iconDescription="Añadir jugador"
-                on:click={() => {
-                    open = true;
-                }}>Añadir jugador</Button
-            >
-
-            <Button
-                disabled={players.length === 0}
-                icon={FaceActivatedAdd}
-                iconDescription="Añadir puntos"
-                on:click={() => {
-                    openPoints = true;
-                }}>Añadir puntos</Button
-            >
-
-            <Button
-                disabled={players.length === 0}
-                icon={CircleFilled}
-                iconDescription="Añadir goles"
-                on:click={() => {
-                    openGoals = true;
-                }}>Añadir goles</Button
-            >
+        <Toolbar size="sm">
+            <span>
+                <Button
+                    icon={Add}
+                    iconDescription="Añadir jugador"
+                    on:click={() => {
+                        open = true;
+                    }}>Añadir jugador</Button
+                >
+                <Button
+                    disabled={players.length === 0}
+                    icon={FaceActivatedAdd}
+                    iconDescription="Añadir puntos"
+                    on:click={() => {
+                        openPoints = true;
+                    }}>Añadir puntos</Button
+                >
+                <Button
+                    disabled={players.length === 0}
+                    icon={CircleFilled}
+                    iconDescription="Añadir goles"
+                    on:click={() => {
+                        openGoals = true;
+                    }}>Añadir goles</Button
+                >
+            </span>
         </Toolbar>
 
         <svelte:fragment slot="cell" let:row let:cell>
