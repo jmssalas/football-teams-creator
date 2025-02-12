@@ -14,8 +14,14 @@
         Grid,
         Row,
         Column,
+        NumberInput,
     } from "carbon-components-svelte";
-    import { Add, Renew, TrashCan } from "carbon-icons-svelte";
+    import {
+        Add,
+        FaceActivatedAdd,
+        Renew,
+        TrashCan,
+    } from "carbon-icons-svelte";
     import { createTeams } from "./createTeams.js";
 
     /** @type {import('./$types').PageData} */
@@ -23,6 +29,7 @@
 
     let rows;
     let open = false;
+    let openPoints = false;
     let player = undefined;
     let action;
     let buttonText;
@@ -40,6 +47,10 @@
         kind = player ? "danger" : "primary";
     }
 
+    /**
+     * @param {Player[]} players
+     * @param {boolean} tie
+     */
     async function win(players, tie = false) {
         await fetch("/", {
             method: "POST",
@@ -154,6 +165,15 @@
                     open = true;
                 }}>Añadir jugador</Button
             >
+
+            <Button
+                disabled={players.length === 0}
+                icon={FaceActivatedAdd}
+                iconDescription="Añadir puntos"
+                on:click={() => {
+                    openPoints = true;
+                }}>Añadir puntos</Button
+            >
         </Toolbar>
 
         <svelte:fragment slot="cell" let:row let:cell>
@@ -179,6 +199,7 @@
     <br />
     <br />
 
+    <!--
     <Button
         kind="danger"
         size="small"
@@ -186,7 +207,7 @@
         on:click={() => {
             refreshPoints();
         }}>Reinicializar puntuación</Button
-    >
+    > -->
 </Content>
 
 <Modal
@@ -208,5 +229,13 @@
             value={player?.name}
         />
         <Button {kind} type="submit">{buttonText}</Button>
+    </Form>
+</Modal>
+
+<Modal bind:open={openPoints} passiveModal>
+    <Form method="POST" action="?/addPoints" on:submit>
+        <input hidden name="players" value={JSON.stringify(players)} />
+        <NumberInput required name="points" label="Puntos" min={1} value={1} />
+        <Button type="submit">Añadir puntos</Button>
     </Form>
 </Modal>

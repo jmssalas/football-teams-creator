@@ -23,4 +23,17 @@ export const actions = {
         const data = await request.formData();
         return db.delete(players).where(eq(players.id, data.get("player-id")));
     },
+    addPoints: async ({ request }) => {
+        const data = await request.formData();
+        const playersToUpdate = JSON.parse(data.get("players"));
+        const points = Number.parseInt(data.get("points"));
+        return Promise.all(
+            playersToUpdate.map(async (player) =>
+                db
+                    .update(players)
+                    .set({ points: player.points + points })
+                    .where(eq(players.id, player.id))
+            )
+        );
+    },
 };
