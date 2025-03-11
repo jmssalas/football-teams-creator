@@ -35,7 +35,7 @@
     let action = $state();
     let buttonText = $state();
     let kind = $state();
-    let teams = $state(undefined);
+    let teams = $state(data.teams);
     let selectedRowIds = $state([]);
 
     const rows = $derived(data.players);
@@ -47,6 +47,16 @@
         action = player ? "?/delete" : "?/create";
         buttonText = player ? "Eliminar jugador" : "Añadir jugador";
         kind = player ? "danger" : "primary";
+    });
+
+    $effect(() => {
+        fetch("/", {
+            method: "POST",
+            body: JSON.stringify({ teams }),
+            headers: {
+                "content-type": "application/json",
+            },
+        });
     });
 
     /**
@@ -61,13 +71,13 @@
                 "content-type": "application/json",
             },
         });
-        teams = undefined;
+        teams = {};
         invalidateAll();
     }
 
     async function refreshPoints() {
         await fetch("/", { method: "DELETE" });
-        teams = undefined;
+        teams = {};
         invalidateAll();
     }
 </script>
@@ -75,14 +85,24 @@
 <Content>
     <Button
         disabled={players.length === 0}
-        on:click={() => (teams = createTeams(players))}>Crear equipos</Button
+        on:click={async () => {
+            teams = createTeams(players);
+        }}>Crear equipos</Button
     >
+    <Button
+        kind="ghost"
+        icon={TrashCan}
+        iconDescription="Borrar equipos"
+        on:click={() => {
+            teams = {};
+        }}
+    />
 
     <br />
     <br />
     <br />
 
-    {#if teams}
+    {#if teams?.team1}
         <Grid>
             <Row>
                 <Column>
