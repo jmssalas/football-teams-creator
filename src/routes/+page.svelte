@@ -26,28 +26,28 @@
     import { createTeams } from "./createTeams.js";
 
     /** @type {import('./$types').PageData} */
-    export let data;
+    let { data } = $props();
 
-    let rows;
-    let open = false;
-    let openPoints = false;
-    let openGoals = false;
-    let player = undefined;
-    let action;
-    let buttonText;
-    let kind;
-    let teams;
-    let selectedRowIds = [];
+    let open = $state(false);
+    let openPoints = $state(false);
+    let openGoals = $state(false);
+    let player = $state(undefined);
+    let action = $state();
+    let buttonText = $state();
+    let kind = $state();
+    let teams = $state(undefined);
+    let selectedRowIds = $state([]);
 
-    $: rows = data.players;
-    $: players = data.players.filter((player) =>
-        selectedRowIds.includes(player.id)
+    const rows = $derived(data.players);
+    const players = $derived(
+        data.players.filter((player) => selectedRowIds.includes(player.id))
     );
-    $: {
+
+    $effect(() => {
         action = player ? "?/delete" : "?/create";
         buttonText = player ? "Eliminar jugador" : "Añadir jugador";
         kind = player ? "danger" : "primary";
-    }
+    });
 
     /**
      * @param {Player[]} players
