@@ -1,0 +1,5 @@
+onlyBuiltDependencies:
+  - '@sveltejs/kit'
+  - better-sqlite3
+  - carbon-components-svelte
+  - esbuild

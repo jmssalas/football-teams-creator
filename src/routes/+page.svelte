@@ -15,6 +15,8 @@
         Row,
         Column,
         NumberInput,
+        Select,
+        SelectItem,
     } from "carbon-components-svelte";
     import {
         Add,
@@ -35,8 +37,9 @@
     let action = $state();
     let buttonText = $state();
     let kind = $state();
-    let teams = $state(data.teams);
+    let teamsArray = $state(data.teams);
     let selectedRowIds = $state([]);
+    let numberOfTeams = $state(2);
 
     const rows = $derived(data.players);
     const players = $derived(
@@ -52,7 +55,7 @@
     $effect(() => {
         fetch("/", {
             method: "POST",
-            body: JSON.stringify({ teams }),
+            body: JSON.stringify({ teams: teamsArray }),
             headers: {
                 "content-type": "application/json",
             },
@@ -71,22 +74,31 @@
                 "content-type": "application/json",
             },
         });
-        teams = {};
+        teamsArray = [];
         invalidateAll();
     }
 
     async function refreshPoints() {
         await fetch("/", { method: "DELETE" });
-        teams = {};
+        teamsArray = [];
         invalidateAll();
     }
 </script>
 
 <Content>
+    <Select
+        labelText="¿Cuántos equipos sois?"
+        on:change={(e) => (numberOfTeams = parseInt(e.target.value))}
+    >
+        <SelectItem value="2" />
+        <SelectItem value="4" />
+        <SelectItem value="6" />
+    </Select>
+
     <Button
         disabled={players.length === 0}
         on:click={async () => {
-            teams = createTeams(players);
+            teamsArray = createTeams(players, numberOfTeams);
         }}>Crear equipos</Button
     >
     <Button
@@ -94,7 +106,7 @@
         icon={TrashCan}
         iconDescription="Borrar equipos"
         on:click={() => {
-            teams = {};
+            teamsArray = [];
         }}
     />
 
@@ -102,63 +114,66 @@
     <br />
     <br />
 
-    {#if teams?.team1}
+    {#if teamsArray.length > 0}
         <Grid>
-            <Row>
-                <Column>
-                    <h2>Equipo 1</h2>
-                    {#each teams.team1 as player}
-                        <p>{player.name}</p>
-                    {/each}
-                    <br />
-                    <br />
-                    <p>
-                        <strong>
-                            Puntos totales: {teams.team1.reduce(
-                                (acc, curr) => acc + curr.points,
-                                0
-                            )}
-                        </strong>
-                    </p>
+            {#each teamsArray as teams}
+                <Row>
+                    <Column>
+                        <h2>Equipo 1</h2>
+                        {#each teams.team1 as player}
+                            <p>{player.name}</p>
+                        {/each}
+                        <br />
+                        <br />
+                        <p>
+                            <strong>
+                                Puntos totales: {teams.team1.reduce(
+                                    (acc, curr) => acc + curr.points,
+                                    0
+                                )}
+                            </strong>
+                        </p>
 
-                    <Button on:click={() => win(teams.team1)}>
-                        Gana equipo 1
-                    </Button>
-                </Column>
+                        <Button on:click={() => win(teams.team1)}>
+                            Gana equipo 1
+                        </Button>
+                    </Column>
 
-                <Column>
-                    <h2>Equipo 2</h2>
-                    {#each teams.team2 as player}
-                        <p>{player.name}</p>
-                    {/each}
-                    <br />
-                    <br />
-                    <p>
-                        <strong>
-                            Puntos totales: {teams.team2.reduce(
-                                (acc, curr) => acc + curr.points,
-                                0
-                            )}
-                        </strong>
-                    </p>
+                    <Column>
+                        <h2>Equipo 2</h2>
+                        {#each teams.team2 as player}
+                            <p>{player.name}</p>
+                        {/each}
+                        <br />
+                        <br />
+                        <p>
+                            <strong>
+                                Puntos totales: {teams.team2.reduce(
+                                    (acc, curr) => acc + curr.points,
+                                    0
+                                )}
+                            </strong>
+                        </p>
 
-                    <Button on:click={() => win(teams.team2)}>
-                        Gana equipo 2
-                    </Button>
-                </Column>
-            </Row>
+                        <Button on:click={() => win(teams.team2)}>
+                            Gana equipo 2
+                        </Button>
+                    </Column>
+                </Row>
 
-            <br />
-            <br />
-            <Row>
-                <Column>
-                    <Button
-                        on:click={() =>
-                            win([...teams.team1, ...teams.team2], true)}
-                        >Empate</Button
-                    >
-                </Column>
-            </Row>
+                <br />
+                <br />
+                <Row>
+                    <Column>
+                        <Button
+                            on:click={() =>
+                                win([...teams.team1, ...teams.team2], true)}
+                            >Empate</Button
+                        >
+                    </Column>
+                </Row>
+                <hr />
+            {/each}
         </Grid>
     {/if}
 
