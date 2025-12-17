@@ -29,3 +29,5 @@ vite.config.ts.timestamp-*
 *.pem
 
 teams.json
+
+drizzle/
