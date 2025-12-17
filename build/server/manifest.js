@@ -10,11 +10,11 @@ return {
 	assets: new Set(["favicon.png"]),
 	mimeTypes: {".png":"image/png"},
 	_: {
-		client: {start:"_app/immutable/entry/start.EPOxuWiS.js",app:"_app/immutable/entry/app.CQJnYGpF.js",imports:["_app/immutable/entry/start.EPOxuWiS.js","_app/immutable/chunks/DMMWzERq.js","_app/immutable/chunks/Dzd4HRd2.js","_app/immutable/chunks/YYtkNPTQ.js","_app/immutable/entry/app.CQJnYGpF.js","_app/immutable/chunks/Dzd4HRd2.js","_app/immutable/chunks/mNhXAasa.js","_app/immutable/chunks/DIQ9jnIP.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:false},
+		client: {start:"_app/immutable/entry/start.B2YjMvZc.js",app:"_app/immutable/entry/app.SQm7N4DZ.js",imports:["_app/immutable/entry/start.B2YjMvZc.js","_app/immutable/chunks/JT74ICdB.js","_app/immutable/chunks/Dzd4HRd2.js","_app/immutable/chunks/YYtkNPTQ.js","_app/immutable/entry/app.SQm7N4DZ.js","_app/immutable/chunks/Dzd4HRd2.js","_app/immutable/chunks/mNhXAasa.js","_app/immutable/chunks/DIQ9jnIP.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:false},
 		nodes: [
 			__memo(() => import('./chunks/0-CTUbdE46.js')),
-			__memo(() => import('./chunks/1-CKe1JQoO.js')),
-			__memo(() => import('./chunks/2-Beq7T-2-.js'))
+			__memo(() => import('./chunks/1-HT4pk6wa.js')),
+			__memo(() => import('./chunks/2--cCQJ7lh.js'))
 		],
 		remotes: {
 			
@@ -25,21 +25,21 @@ return {
 				pattern: /^\/$/,
 				params: [],
 				page: { layouts: [0,], errors: [1,], leaf: 2 },
-				endpoint: __memo(() => import('./chunks/_server-3h0rMn7W.js'))
+				endpoint: __memo(() => import('./chunks/_server-DGYadRHA.js'))
 			},
 			{
 				id: "/api/matches",
 				pattern: /^\/api\/matches\/?$/,
 				params: [],
 				page: null,
-				endpoint: __memo(() => import('./chunks/_server-CZTgvEFP.js'))
+				endpoint: __memo(() => import('./chunks/_server-CYdOLFNq.js'))
 			},
 			{
 				id: "/api/players",
 				pattern: /^\/api\/players\/?$/,
 				params: [],
 				page: null,
-				endpoint: __memo(() => import('./chunks/_server-CmSUGEai.js'))
+				endpoint: __memo(() => import('./chunks/_server-CiEzNw5a.js'))
 			}
 		],
 		prerendered_routes: new Set([]),

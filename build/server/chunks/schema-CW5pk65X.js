@@ -30,8 +30,8 @@ const matches = sqliteTable(
 const matchParticipants = sqliteTable(
   "match_participants",
   {
-    matchId: integer("match_id").notNull().references(() => matches.id),
-    playerId: integer("player_id").notNull().references(() => players.id),
+    matchId: integer("match_id").notNull().references(() => matches.id, { onDelete: "cascade" }),
+    playerId: integer("player_id").notNull().references(() => players.id, { onDelete: "cascade" }),
     team: text("team").notNull()
     // "A" = Team A, "B" = Team B
   },
@@ -43,4 +43,4 @@ const matchParticipants = sqliteTable(
 );
 
 export { matchParticipants as a, db as d, matches as m, players as p };
-//# sourceMappingURL=schema-C8ENu7Sj.js.map
+//# sourceMappingURL=schema-CW5pk65X.js.map

@@ -1,4 +1,4 @@
-import { d as db, p as players, a as matchParticipants, m as matches } from './schema-C8ENu7Sj.js';
+import { d as db, p as players, a as matchParticipants, m as matches } from './schema-CW5pk65X.js';
 import { j as json } from './index-CoD1IJuy.js';
 import { eq, sql } from 'drizzle-orm';
 import 'dotenv/config';
@@ -77,4 +77,4 @@ async function GET() {
 }
 
 export { DELETE, GET, POST };
-//# sourceMappingURL=_server-CmSUGEai.js.map
+//# sourceMappingURL=_server-CiEzNw5a.js.map

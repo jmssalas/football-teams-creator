@@ -1,4 +1,4 @@
-import { d as db, p as players } from './schema-C8ENu7Sj.js';
+import { d as db, p as players } from './schema-CW5pk65X.js';
 import { j as json } from './index-CoD1IJuy.js';
 import { eq } from 'drizzle-orm';
 import fs from 'node:fs';
@@ -30,4 +30,4 @@ async function win(wPlayers, points) {
 }
 
 export { POST };
-//# sourceMappingURL=_server-3h0rMn7W.js.map
+//# sourceMappingURL=_server-DGYadRHA.js.map

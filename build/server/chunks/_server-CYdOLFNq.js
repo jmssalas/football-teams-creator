@@ -1,4 +1,4 @@
-import { d as db, m as matches, a as matchParticipants } from './schema-C8ENu7Sj.js';
+import { d as db, m as matches, a as matchParticipants } from './schema-CW5pk65X.js';
 import { j as json } from './index-CoD1IJuy.js';
 import 'dotenv/config';
 import 'drizzle-orm/better-sqlite3';
@@ -24,4 +24,4 @@ async function POST({ request }) {
 }
 
 export { POST };
-//# sourceMappingURL=_server-CZTgvEFP.js.map
+//# sourceMappingURL=_server-CYdOLFNq.js.map
