@@ -18,7 +18,7 @@
     import { Add, Checkbox, TrashCan } from "carbon-icons-svelte";
     import { createTeams } from "./createTeams.js";
 
-    /** @type {import('./$types').PageData} */
+    /** @type {import('./$types').PageProps} */
     let { data } = $props();
 
     let openPlayer = $state(false);
@@ -194,8 +194,13 @@
         size="compact"
         headers={[
             { key: "name", value: "Nombre" },
-            { key: "points", value: "Puntos" },
-            { key: "goals", value: "Goles" },
+            { key: "matchesWon", value: "Partidos ganados" },
+            { key: "matchesDrawn", value: "Partidos empatados" },
+            { key: "matchesLost", value: "Partidos perdidos" },
+            { key: "goalsScored", value: "Goles marcados" },
+            { key: "goalsConceded", value: "Goles recibidos" },
+            { key: "totalMatches", value: "Total partidos" },
+            { key: "victoryPercentage", value: "Porcentaje victorias" },
             { key: "buttons", value: "" },
         ]}
         {rows}
