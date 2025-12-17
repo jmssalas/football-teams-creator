@@ -79,12 +79,6 @@
         invalidateAll();
     }
 
-    async function refreshPoints() {
-        await fetch("/", { method: "DELETE" });
-        teamsArray = [];
-        invalidateAll();
-    }
-
     /**
      * @param {{ name: string }} data
      */
@@ -257,20 +251,6 @@
             {/if}
         </svelte:fragment>
     </DataTable>
-
-    <br />
-    <br />
-    <br />
-
-    <!--
-    <Button
-        kind="danger"
-        size="small"
-        icon={Renew}
-        on:click={() => {
-            refreshPoints();
-        }}>Reinicializar puntuación</Button
-    > -->
 </Content>
 
 <!-- Modal for adding a new player -->
