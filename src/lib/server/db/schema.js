@@ -34,10 +34,10 @@ export const matchParticipants = sqliteTable(
     {
         matchId: integer("match_id")
             .notNull()
-            .references(() => matches.id),
+            .references(() => matches.id, { onDelete: "cascade" }),
         playerId: integer("player_id")
             .notNull()
-            .references(() => players.id),
+            .references(() => players.id, { onDelete: "cascade" }),
         team: text("team").notNull(), // "A" = Team A, "B" = Team B
     },
     (table) => ({
