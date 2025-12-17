@@ -8,35 +8,23 @@
         DataTable,
         Modal,
         Toolbar,
-        ToolbarContent,
-        Form,
         TextInput,
         Grid,
         Row,
         Column,
-        NumberInput,
         Select,
         SelectItem,
+        NumberInput,
     } from "carbon-components-svelte";
-    import {
-        Add,
-        CircleFilled,
-        FaceActivatedAdd,
-        Renew,
-        TrashCan,
-    } from "carbon-icons-svelte";
+    import { Add, Checkbox, TrashCan } from "carbon-icons-svelte";
     import { createTeams } from "./createTeams.js";
 
-    /** @type {import('./$types').PageData} */
+    /** @type {import('./$types').PageProps} */
     let { data } = $props();
 
-    let open = $state(false);
-    let openPoints = $state(false);
-    let openGoals = $state(false);
-    let player = $state(undefined);
-    let action = $state();
-    let buttonText = $state();
-    let kind = $state();
+    let openPlayer = $state(false);
+    let playerToDelete = $state(undefined);
+    let playerName = $state("");
     let teamsArray = $state(data.teams);
     let selectedRowIds = $state([]);
     let numberOfTeams = $state(2);
@@ -45,12 +33,6 @@
     const players = $derived(
         data.players.filter((player) => selectedRowIds.includes(player.id))
     );
-
-    $effect(() => {
-        action = player ? "?/delete" : "?/create";
-        buttonText = player ? "Eliminar jugador" : "Añadir jugador";
-        kind = player ? "danger" : "primary";
-    });
 
     $effect(() => {
         fetch("/", {
@@ -66,21 +48,50 @@
      * @param {Player[]} players
      * @param {boolean} tie
      */
-    async function win(players, tie = false) {
-        await fetch("/", {
+    async function createMatch(teamArrayIndex) {
+        const matchResult = teamsArray[teamArrayIndex];
+        const teamA = matchResult.teamA.map((player) => player.id);
+        const teamB = matchResult.teamB.map((player) => player.id);
+        const teamAScore = matchResult.teamAScore;
+        const teamBScore = matchResult.teamBScore;
+        await fetch("/api/matches", {
             method: "POST",
-            body: JSON.stringify({ players, tie }),
+            body: JSON.stringify({ teamA, teamB, teamAScore, teamBScore }),
             headers: {
                 "content-type": "application/json",
             },
         });
-        teamsArray = [];
+        teamsArray.splice(teamArrayIndex, 1);
         invalidateAll();
     }
 
-    async function refreshPoints() {
-        await fetch("/", { method: "DELETE" });
-        teamsArray = [];
+    /**
+     * @param {{ name: string }} data
+     */
+    async function createPlayer(data) {
+        await fetch("/api/players", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "content-type": "apsplication/json",
+            },
+        });
+        openPlayer = false;
+        invalidateAll();
+    }
+
+    /**
+     * @param {number} playerId
+     */
+    async function deletePlayer(playerId) {
+        await fetch("/api/players", {
+            method: "DELETE",
+            body: JSON.stringify({ id: playerId }),
+            headers: {
+                "content-type": "application/json",
+            },
+        });
+        playerToDelete = undefined;
         invalidateAll();
     }
 </script>
@@ -97,7 +108,7 @@
 
     <Button
         disabled={players.length === 0}
-        on:click={async () => {
+        on:click={() => {
             teamsArray = createTeams(players, numberOfTeams);
         }}>Crear equipos</Button
     >
@@ -116,48 +127,46 @@
 
     {#if teamsArray.length > 0}
         <Grid>
-            {#each teamsArray as teams}
+            {#each Object.entries(teamsArray) as [index, teams]}
                 <Row>
                     <Column>
-                        <h2>Equipo 1</h2>
-                        {#each teams.team1 as player}
+                        <h2>Equipo A</h2>
+                        {#each teams.teamA as player}
                             <p>{player.name}</p>
                         {/each}
                         <br />
                         <br />
                         <p>
                             <strong>
-                                Puntos totales: {teams.team1.reduce(
-                                    (acc, curr) => acc + curr.points,
-                                    0
-                                )}
+                                Porcentaje de Victorias: {parseInt(
+                                    teams.teamA.reduce(
+                                        (acc, curr) =>
+                                            acc + curr.victoryPercentage,
+                                        0
+                                    ) / teams.teamA.length
+                                )} %
                             </strong>
                         </p>
-
-                        <Button on:click={() => win(teams.team1)}>
-                            Gana equipo 1
-                        </Button>
                     </Column>
 
                     <Column>
-                        <h2>Equipo 2</h2>
-                        {#each teams.team2 as player}
+                        <h2>Equipo B</h2>
+                        {#each teams.teamB as player}
                             <p>{player.name}</p>
                         {/each}
                         <br />
                         <br />
                         <p>
                             <strong>
-                                Puntos totales: {teams.team2.reduce(
-                                    (acc, curr) => acc + curr.points,
-                                    0
-                                )}
+                                Porcentaje de Victorias: {parseInt(
+                                    teams.teamB.reduce(
+                                        (acc, curr) =>
+                                            acc + curr.victoryPercentage,
+                                        0
+                                    ) / teams.teamB.length
+                                )} %
                             </strong>
                         </p>
-
-                        <Button on:click={() => win(teams.team2)}>
-                            Gana equipo 2
-                        </Button>
                     </Column>
                 </Row>
 
@@ -165,11 +174,31 @@
                 <br />
                 <Row>
                     <Column>
+                        <NumberInput
+                            label="Goles Equipo A"
+                            min={0}
+                            on:change={(e) =>
+                                (teams.teamAScore = parseInt(e.detail))}
+                        />
+                    </Column>
+                    <Column>
+                        <NumberInput
+                            label="Goles Equipo B"
+                            min={0}
+                            on:change={(e) =>
+                                (teams.teamBScore = parseInt(e.detail))}
+                        />
+                    </Column>
+                </Row>
+                <Row>
+                    <Column>
                         <Button
-                            on:click={() =>
-                                win([...teams.team1, ...teams.team2], true)}
-                            >Empate</Button
+                            disabled={teams.teamAScore === undefined ||
+                                teams.teamBScore === undefined}
+                            on:click={() => createMatch(index)}
                         >
+                            Registrar resultado
+                        </Button>
                     </Column>
                 </Row>
                 <hr />
@@ -189,8 +218,13 @@
         size="compact"
         headers={[
             { key: "name", value: "Nombre" },
-            { key: "points", value: "Puntos" },
-            { key: "goals", value: "Goles" },
+            { key: "matchesWon", value: "Partidos ganados" },
+            { key: "matchesDrawn", value: "Partidos empatados" },
+            { key: "matchesLost", value: "Partidos perdidos" },
+            { key: "totalMatches", value: "Total partidos" },
+            { key: "victoryPercentage", value: "Porcentaje victorias" },
+            { key: "goalsFor", value: "Goles a favor" },
+            { key: "goalsAgainst", value: "Goles en contra" },
             { key: "buttons", value: "" },
         ]}
         {rows}
@@ -201,96 +235,60 @@
                     icon={Add}
                     iconDescription="Añadir jugador"
                     on:click={() => {
-                        open = true;
+                        openPlayer = true;
                     }}>Añadir jugador</Button
-                >
-                <Button
-                    disabled={players.length === 0}
-                    icon={FaceActivatedAdd}
-                    iconDescription="Añadir puntos"
-                    on:click={() => {
-                        openPoints = true;
-                    }}>Añadir puntos</Button
-                >
-                <Button
-                    disabled={players.length === 0}
-                    icon={CircleFilled}
-                    iconDescription="Añadir goles"
-                    on:click={() => {
-                        openGoals = true;
-                    }}>Añadir goles</Button
                 >
             </span>
         </Toolbar>
 
         <svelte:fragment slot="cell" let:row let:cell>
             {#if cell.key === "buttons"}
-                <Button
-                    tooltipPosition="right"
-                    tooltipAlignment="end"
-                    kind="danger-ghost"
-                    iconDescription="Eliminar jugador"
-                    icon={TrashCan}
-                    on:click={() => {
-                        player = row;
-                        open = true;
-                    }}
-                />
+                {#if playerToDelete?.id === row.id}
+                    <Button
+                        tooltipPosition="right"
+                        tooltipAlignment="end"
+                        kind="danger-ghost"
+                        iconDescription="¿Seguro?"
+                        icon={Checkbox}
+                        size="small"
+                        on:click={() => {
+                            deletePlayer(row.id);
+                        }}
+                    />
+                {:else}
+                    <Button
+                        tooltipPosition="right"
+                        tooltipAlignment="end"
+                        kind="danger-ghost"
+                        iconDescription="Eliminar jugador"
+                        icon={TrashCan}
+                        size="small"
+                        on:click={() => {
+                            playerToDelete = row;
+                        }}
+                    />
+                {/if}
+            {:else if cell.key === "victoryPercentage"}
+                {cell.value ? `${parseInt(cell.value)} %` : "0 %"}
             {:else}
                 {cell.value ?? ""}
             {/if}
         </svelte:fragment>
     </DataTable>
-
-    <br />
-    <br />
-    <br />
-
-    <!--
-    <Button
-        kind="danger"
-        size="small"
-        icon={Renew}
-        on:click={() => {
-            refreshPoints();
-        }}>Reinicializar puntuación</Button
-    > -->
 </Content>
 
+<!-- Modal for adding a new player -->
 <Modal
-    bind:open
-    passiveModal
-    on:close={() => {
-        player = undefined;
+    bind:open={openPlayer}
+    primaryButtonText="Añadir jugador"
+    primaryButtonDisabled={playerName.trim() === ""}
+    on:click:button--primary={() => {
+        createPlayer({ name: playerName });
     }}
 >
-    <Form method="POST" {action} on:submit>
-        <input hidden name="player-id" value={player?.id} />
-        <TextInput
-            required
-            readonly={player !== undefined}
-            type
-            name="player-name"
-            labelText="Nombre del jugador"
-            placeholder="Introduce el nombre del jugador..."
-            value={player?.name}
-        />
-        <Button {kind} type="submit">{buttonText}</Button>
-    </Form>
-</Modal>
-
-<Modal bind:open={openPoints} passiveModal>
-    <Form method="POST" action="?/addPoints" on:submit>
-        <input hidden name="players" value={JSON.stringify(players)} />
-        <NumberInput required name="points" label="Puntos" value={0} />
-        <Button type="submit">Añadir puntos</Button>
-    </Form>
-</Modal>
-
-<Modal bind:open={openGoals} passiveModal>
-    <Form method="POST" action="?/addGoals" on:submit>
-        <input hidden name="players" value={JSON.stringify(players)} />
-        <NumberInput required name="goals" label="Goles" value={0} />
-        <Button type="submit">Añadir goles</Button>
-    </Form>
+    <TextInput
+        labelText="Nombre del jugador"
+        placeholder="Introduce el nombre del jugador..."
+        bind:value={playerName}
+    />
 </Modal>
