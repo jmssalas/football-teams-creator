@@ -75,8 +75,8 @@ export async function GET() {
             matchesWon: sq.matchesWon,
             matchesDrawn: sq.matchesDrawn,
             matchesLost: sq.matchesLost,
-            goalsScored: sq.goalsScored,
-            goalsConceded: sq.goalsConceded,
+            goalsFor: sq.goalsFor,
+            goalsAgainst: sq.goalsAgainst,
             totalMatches:
                 sql`${sq.matchesWon} + ${sq.matchesDrawn} + ${sq.matchesLost}`.as(
                     "totalMatches"
