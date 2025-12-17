@@ -30,10 +30,11 @@
     /** @type {import('./$types').PageData} */
     let { data } = $props();
 
-    let open = $state(false);
+    let openPlayer = $state(false);
     let openPoints = $state(false);
     let openGoals = $state(false);
     let player = $state(undefined);
+    let playerName = $state("");
     let action = $state();
     let buttonText = $state();
     let kind = $state();
@@ -81,6 +82,21 @@
     async function refreshPoints() {
         await fetch("/", { method: "DELETE" });
         teamsArray = [];
+        invalidateAll();
+    }
+
+    /**
+     * @param {{ name: string }} data
+     */
+    async function createPlayer(data) {
+        await fetch("/api/players", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "content-type": "apsplication/json",
+            },
+        });
+        openPlayer = false;
         invalidateAll();
     }
 </script>
@@ -201,7 +217,7 @@
                     icon={Add}
                     iconDescription="Añadir jugador"
                     on:click={() => {
-                        open = true;
+                        openPlayer = true;
                     }}>Añadir jugador</Button
                 >
                 <Button
@@ -257,26 +273,20 @@
     > -->
 </Content>
 
+<!-- Modal for adding a new player -->
 <Modal
-    bind:open
-    passiveModal
-    on:close={() => {
-        player = undefined;
+    bind:open={openPlayer}
+    primaryButtonText="Añadir jugador"
+    primaryButtonDisabled={playerName.trim() === ""}
+    on:click:button--primary={() => {
+        createPlayer({ name: playerName });
     }}
 >
-    <Form method="POST" {action} on:submit>
-        <input hidden name="player-id" value={player?.id} />
-        <TextInput
-            required
-            readonly={player !== undefined}
-            type
-            name="player-name"
-            labelText="Nombre del jugador"
-            placeholder="Introduce el nombre del jugador..."
-            value={player?.name}
-        />
-        <Button {kind} type="submit">{buttonText}</Button>
-    </Form>
+    <TextInput
+        labelText="Nombre del jugador"
+        placeholder="Introduce el nombre del jugador..."
+        bind:value={playerName}
+    />
 </Modal>
 
 <Modal bind:open={openPoints} passiveModal>
