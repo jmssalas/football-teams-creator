@@ -8,7 +8,7 @@ let minDifference = Infinity;
 /**
  * @param {Player[]} players
  * @param {number} numberOfTeams
- * @returns {{ team1: Player[], team2: Player[]}[]}
+ * @returns {{ teamA: Player[], teamB: Player[]}[]}
  */
 export function createTeams(players, numberOfTeams) {
     // Randomize players
@@ -68,18 +68,18 @@ export function createTeams(players, numberOfTeams) {
     return teams;
 }
 
-function backtrack(index, players, team1, team2, pointsA, pointsB) {
+function backtrack(index, players, teamA, teamB, vicPercA, vicPercB) {
     // Restringir la diferencia de tamaño entre los equipos a máximo 1 jugador
-    if (Math.abs(team1.length - team2.length) > 1) {
+    if (Math.abs(teamA.length - teamB.length) > 1) {
         return;
     }
 
     // Si hemos procesado todos los jugadores
     if (index >= players.length) {
-        const difference = Math.abs(pointsA - pointsB);
+        const difference = Math.abs(vicPercA - vicPercB);
         if (difference < minDifference) {
             minDifference = difference;
-            bestDivision = { team1: [...team1], team2: [...team2] };
+            bestDivision = { teamA: [...teamA], teamB: [...teamB] };
         }
         return;
     }
@@ -87,26 +87,26 @@ function backtrack(index, players, team1, team2, pointsA, pointsB) {
     const player = players[index];
 
     // Intentar agregar al equipo A
-    team1.push(player);
+    teamA.push(player);
     backtrack(
         index + 1,
         players,
-        team1,
-        team2,
-        pointsA + player.points,
-        pointsB
+        teamA,
+        teamB,
+        vicPercA + player.victoryPercentage,
+        vicPercB
     );
-    team1.pop();
+    teamA.pop();
 
     // Intentar agregar al equipo B
-    team2.push(player);
+    teamB.push(player);
     backtrack(
         index + 1,
         players,
-        team1,
-        team2,
-        pointsA,
-        pointsB + player.points
+        teamA,
+        teamB,
+        vicPercA,
+        vicPercB + player.victoryPercentage
     );
-    team2.pop();
+    teamB.pop();
 }

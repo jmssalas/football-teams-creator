@@ -46,20 +46,20 @@ export async function GET() {
                     ELSE 0
                 END
             )`.as("matchesLost"),
-            goalsScored: sql`SUM(
+            goalsFor: sql`SUM(
                 CASE
                     WHEN ${matchParticipants.team} = 'A' THEN ${matches.teamAScore}
                     WHEN ${matchParticipants.team} = 'B' THEN ${matches.teamBScore}
                     ELSE 0
                 END
-            )`.as("goalsScored"),
-            goalsConceded: sql`SUM(
+            )`.as("goalsFor"),
+            goalsAgainst: sql`SUM(
                 CASE
                     WHEN ${matchParticipants.team} = 'A' THEN ${matches.teamBScore}
                     WHEN ${matchParticipants.team} = 'B' THEN ${matches.teamAScore}
                     ELSE 0
                 END
-            )`.as("goalsConceded"),
+            )`.as("goalsAgainst"),
         })
         .from(players)
         .leftJoin(matchParticipants, eq(players.id, matchParticipants.playerId))

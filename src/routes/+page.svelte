@@ -14,6 +14,7 @@
         Column,
         Select,
         SelectItem,
+        NumberInput,
     } from "carbon-components-svelte";
     import { Add, Checkbox, TrashCan } from "carbon-icons-svelte";
     import { createTeams } from "./createTeams.js";
@@ -47,15 +48,20 @@
      * @param {Player[]} players
      * @param {boolean} tie
      */
-    async function win(players, tie = false) {
-        await fetch("/", {
+    async function createMatch(teamArrayIndex) {
+        const matchResult = teamsArray[teamArrayIndex];
+        const teamA = matchResult.teamA.map((player) => player.id);
+        const teamB = matchResult.teamB.map((player) => player.id);
+        const teamAScore = matchResult.teamAScore;
+        const teamBScore = matchResult.teamBScore;
+        await fetch("/api/matches", {
             method: "POST",
-            body: JSON.stringify({ players, tie }),
+            body: JSON.stringify({ teamA, teamB, teamAScore, teamBScore }),
             headers: {
                 "content-type": "application/json",
             },
         });
-        teamsArray = [];
+        teamsArray.splice(teamArrayIndex, 1);
         invalidateAll();
     }
 
@@ -121,48 +127,46 @@
 
     {#if teamsArray.length > 0}
         <Grid>
-            {#each teamsArray as teams}
+            {#each Object.entries(teamsArray) as [index, teams]}
                 <Row>
                     <Column>
-                        <h2>Equipo 1</h2>
-                        {#each teams.team1 as player}
+                        <h2>Equipo A</h2>
+                        {#each teams.teamA as player}
                             <p>{player.name}</p>
                         {/each}
                         <br />
                         <br />
                         <p>
                             <strong>
-                                Puntos totales: {teams.team1.reduce(
-                                    (acc, curr) => acc + curr.points,
-                                    0
-                                )}
+                                Porcentaje de Victorias: {parseInt(
+                                    teams.teamA.reduce(
+                                        (acc, curr) =>
+                                            acc + curr.victoryPercentage,
+                                        0
+                                    )
+                                ) / teams.teamA.length} %
                             </strong>
                         </p>
-
-                        <Button on:click={() => win(teams.team1)}>
-                            Gana equipo 1
-                        </Button>
                     </Column>
 
                     <Column>
-                        <h2>Equipo 2</h2>
-                        {#each teams.team2 as player}
+                        <h2>Equipo B</h2>
+                        {#each teams.teamB as player}
                             <p>{player.name}</p>
                         {/each}
                         <br />
                         <br />
                         <p>
                             <strong>
-                                Puntos totales: {teams.team2.reduce(
-                                    (acc, curr) => acc + curr.points,
-                                    0
-                                )}
+                                Porcentaje de Victorias: {parseInt(
+                                    teams.teamB.reduce(
+                                        (acc, curr) =>
+                                            acc + curr.victoryPercentage,
+                                        0
+                                    )
+                                ) / teams.teamB.length} %
                             </strong>
                         </p>
-
-                        <Button on:click={() => win(teams.team2)}>
-                            Gana equipo 2
-                        </Button>
                     </Column>
                 </Row>
 
@@ -170,11 +174,31 @@
                 <br />
                 <Row>
                     <Column>
+                        <NumberInput
+                            label="Goles Equipo A"
+                            min={0}
+                            on:change={(e) =>
+                                (teams.teamAScore = parseInt(e.detail))}
+                        />
+                    </Column>
+                    <Column>
+                        <NumberInput
+                            label="Goles Equipo B"
+                            min={0}
+                            on:change={(e) =>
+                                (teams.teamBScore = parseInt(e.detail))}
+                        />
+                    </Column>
+                </Row>
+                <Row>
+                    <Column>
                         <Button
-                            on:click={() =>
-                                win([...teams.team1, ...teams.team2], true)}
-                            >Empate</Button
+                            disabled={teams.teamAScore === undefined ||
+                                teams.teamBScore === undefined}
+                            on:click={() => createMatch(index)}
                         >
+                            Registrar resultado
+                        </Button>
                     </Column>
                 </Row>
                 <hr />
@@ -197,8 +221,8 @@
             { key: "matchesWon", value: "Partidos ganados" },
             { key: "matchesDrawn", value: "Partidos empatados" },
             { key: "matchesLost", value: "Partidos perdidos" },
-            { key: "goalsScored", value: "Goles marcados" },
-            { key: "goalsConceded", value: "Goles recibidos" },
+            { key: "goalsFor", value: "Goles a favor" },
+            { key: "goalsAgainst", value: "Goles en contra" },
             { key: "totalMatches", value: "Total partidos" },
             { key: "victoryPercentage", value: "Porcentaje victorias" },
             { key: "buttons", value: "" },
@@ -244,6 +268,8 @@
                         }}
                     />
                 {/if}
+            {:else if cell.key === "victoryPercentage"}
+                {cell.value ? `${parseInt(cell.value)} %` : "0 %"}
             {:else}
                 {cell.value ?? ""}
             {/if}
