@@ -11,6 +11,9 @@ let minDifference = Infinity;
  * @returns {{ teamA: Player[], teamB: Player[]}[]}
  */
 export function createTeams(players, numberOfTeams) {
+    bestDivision = null;
+    minDifference = Infinity;
+
     // Randomize players
     players.sort(() => Math.random() - 0.5);
 
@@ -26,8 +29,6 @@ export function createTeams(players, numberOfTeams) {
             teams.push(bestDivision);
             break;
         case 2:
-            bestDivision = null;
-            minDifference = Infinity;
             half = Math.ceil(players.length / division);
             half1 = players.slice(0, half);
             half2 = players.slice(half);
@@ -42,8 +43,6 @@ export function createTeams(players, numberOfTeams) {
             teams.push(Object.assign({}, bestDivision));
             break;
         case 3:
-            bestDivision = null;
-            minDifference = Infinity;
             half = Math.ceil(players.length / division);
             half1 = players.slice(0, half);
             half2 = players.slice(half, half * 2);
@@ -65,6 +64,7 @@ export function createTeams(players, numberOfTeams) {
             teams.push(Object.assign({}, bestDivision));
             break;
     }
+
     return teams;
 }
 

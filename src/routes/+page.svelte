@@ -108,7 +108,7 @@
 
     <Button
         disabled={players.length === 0}
-        on:click={async () => {
+        on:click={() => {
             teamsArray = createTeams(players, numberOfTeams);
         }}>Crear equipos</Button
     >
