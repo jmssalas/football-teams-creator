@@ -8,38 +8,22 @@
         DataTable,
         Modal,
         Toolbar,
-        ToolbarContent,
-        Form,
         TextInput,
         Grid,
         Row,
         Column,
-        NumberInput,
         Select,
         SelectItem,
     } from "carbon-components-svelte";
-    import {
-        Add,
-        Checkbox,
-        CircleFilled,
-        FaceActivatedAdd,
-        Renew,
-        TrashCan,
-    } from "carbon-icons-svelte";
+    import { Add, Checkbox, TrashCan } from "carbon-icons-svelte";
     import { createTeams } from "./createTeams.js";
 
     /** @type {import('./$types').PageData} */
     let { data } = $props();
 
     let openPlayer = $state(false);
-    let openPoints = $state(false);
-    let openGoals = $state(false);
-    let player = $state(undefined);
     let playerToDelete = $state(undefined);
     let playerName = $state("");
-    let action = $state();
-    let buttonText = $state();
-    let kind = $state();
     let teamsArray = $state(data.teams);
     let selectedRowIds = $state([]);
     let numberOfTeams = $state(2);
@@ -48,12 +32,6 @@
     const players = $derived(
         data.players.filter((player) => selectedRowIds.includes(player.id))
     );
-
-    $effect(() => {
-        action = player ? "?/delete" : "?/create";
-        buttonText = player ? "Eliminar jugador" : "Añadir jugador";
-        kind = player ? "danger" : "primary";
-    });
 
     $effect(() => {
         fetch("/", {
@@ -231,22 +209,6 @@
                         openPlayer = true;
                     }}>Añadir jugador</Button
                 >
-                <Button
-                    disabled={players.length === 0}
-                    icon={FaceActivatedAdd}
-                    iconDescription="Añadir puntos"
-                    on:click={() => {
-                        openPoints = true;
-                    }}>Añadir puntos</Button
-                >
-                <Button
-                    disabled={players.length === 0}
-                    icon={CircleFilled}
-                    iconDescription="Añadir goles"
-                    on:click={() => {
-                        openGoals = true;
-                    }}>Añadir goles</Button
-                >
             </span>
         </Toolbar>
 
@@ -298,20 +260,4 @@
         placeholder="Introduce el nombre del jugador..."
         bind:value={playerName}
     />
-</Modal>
-
-<Modal bind:open={openPoints} passiveModal>
-    <Form method="POST" action="?/addPoints" on:submit>
-        <input hidden name="players" value={JSON.stringify(players)} />
-        <NumberInput required name="points" label="Puntos" value={0} />
-        <Button type="submit">Añadir puntos</Button>
-    </Form>
-</Modal>
-
-<Modal bind:open={openGoals} passiveModal>
-    <Form method="POST" action="?/addGoals" on:submit>
-        <input hidden name="players" value={JSON.stringify(players)} />
-        <NumberInput required name="goals" label="Goles" value={0} />
-        <Button type="submit">Añadir goles</Button>
-    </Form>
 </Modal>
