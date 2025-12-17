@@ -20,6 +20,7 @@
     } from "carbon-components-svelte";
     import {
         Add,
+        Checkbox,
         CircleFilled,
         FaceActivatedAdd,
         Renew,
@@ -34,6 +35,7 @@
     let openPoints = $state(false);
     let openGoals = $state(false);
     let player = $state(undefined);
+    let playerToDelete = $state(undefined);
     let playerName = $state("");
     let action = $state();
     let buttonText = $state();
@@ -91,6 +93,21 @@
             },
         });
         openPlayer = false;
+        invalidateAll();
+    }
+
+    /**
+     * @param {number} playerId
+     */
+    async function deletePlayer(playerId) {
+        await fetch("/api/players", {
+            method: "DELETE",
+            body: JSON.stringify({ id: playerId }),
+            headers: {
+                "content-type": "application/json",
+            },
+        });
+        playerToDelete = undefined;
         invalidateAll();
     }
 </script>
@@ -235,17 +252,31 @@
 
         <svelte:fragment slot="cell" let:row let:cell>
             {#if cell.key === "buttons"}
-                <Button
-                    tooltipPosition="right"
-                    tooltipAlignment="end"
-                    kind="danger-ghost"
-                    iconDescription="Eliminar jugador"
-                    icon={TrashCan}
-                    on:click={() => {
-                        player = row;
-                        open = true;
-                    }}
-                />
+                {#if playerToDelete?.id === row.id}
+                    <Button
+                        tooltipPosition="right"
+                        tooltipAlignment="end"
+                        kind="danger-ghost"
+                        iconDescription="¿Seguro?"
+                        icon={Checkbox}
+                        size="small"
+                        on:click={() => {
+                            deletePlayer(row.id);
+                        }}
+                    />
+                {:else}
+                    <Button
+                        tooltipPosition="right"
+                        tooltipAlignment="end"
+                        kind="danger-ghost"
+                        iconDescription="Eliminar jugador"
+                        icon={TrashCan}
+                        size="small"
+                        on:click={() => {
+                            playerToDelete = row;
+                        }}
+                    />
+                {/if}
             {:else}
                 {cell.value ?? ""}
             {/if}
