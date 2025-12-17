@@ -12,6 +12,7 @@
     import "carbon-components-svelte/css/all.css";
 
     let theme = $state("g90");
+    let { children } = $props();
 </script>
 
 <Theme bind:theme persist />
@@ -30,4 +31,4 @@
     </HeaderUtilities>
 </Header>
 
-<slot />
+{@render children()}
