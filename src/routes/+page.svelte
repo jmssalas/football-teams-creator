@@ -143,8 +143,8 @@
                                         (acc, curr) =>
                                             acc + curr.victoryPercentage,
                                         0
-                                    )
-                                ) / teams.teamA.length} %
+                                    ) / teams.teamA.length
+                                )} %
                             </strong>
                         </p>
                     </Column>
@@ -163,8 +163,8 @@
                                         (acc, curr) =>
                                             acc + curr.victoryPercentage,
                                         0
-                                    )
-                                ) / teams.teamB.length} %
+                                    ) / teams.teamB.length
+                                )} %
                             </strong>
                         </p>
                     </Column>
@@ -221,10 +221,10 @@
             { key: "matchesWon", value: "Partidos ganados" },
             { key: "matchesDrawn", value: "Partidos empatados" },
             { key: "matchesLost", value: "Partidos perdidos" },
-            { key: "goalsFor", value: "Goles a favor" },
-            { key: "goalsAgainst", value: "Goles en contra" },
             { key: "totalMatches", value: "Total partidos" },
             { key: "victoryPercentage", value: "Porcentaje victorias" },
+            { key: "goalsFor", value: "Goles a favor" },
+            { key: "goalsAgainst", value: "Goles en contra" },
             { key: "buttons", value: "" },
         ]}
         {rows}
