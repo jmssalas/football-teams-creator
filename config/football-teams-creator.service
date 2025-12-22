@@ -1,0 +1,13 @@
+# /usr/lib/systemd/system/football-teams-creator.service
+
+[Unit]
+Description=Football Teams Creator
+
+[Service]
+Type=simple
+WorkingDirectory=/home/ec2-user/football-teams-creator
+ExecStart=/home/ec2-user/.nvm/versions/node/v22.13.1/bin/node build
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
