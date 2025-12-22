@@ -6,7 +6,7 @@ Description=Football Teams Creator
 [Service]
 Type=simple
 WorkingDirectory=/home/ec2-user/football-teams-creator
-ExecStart=/home/ec2-user/.nvm/versions/node/v22.13.1/bin/node build
+ExecStart=/home/ec2-user/.nvm/versions/node/v24.12.0/bin/node build
 Restart=always
 
 [Install]
