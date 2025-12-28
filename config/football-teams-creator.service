@@ -6,6 +6,7 @@ Description=Football Teams Creator
 [Service]
 Type=simple
 WorkingDirectory=/home/ec2-user/football-teams-creator
+Environment="PORT=80"
 ExecStart=/home/ec2-user/.nvm/versions/node/v24.12.0/bin/node build
 Restart=always
 
