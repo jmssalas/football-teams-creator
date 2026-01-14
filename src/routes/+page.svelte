@@ -287,11 +287,14 @@
     bind:open={openPlayer}
     primaryButtonText="Añadir jugador"
     primaryButtonDisabled={playerName.trim() === ""}
+    selectorPrimaryFocus="#player-name"
     on:click:button--primary={() => {
         createPlayer({ name: playerName });
+        playerName = "";
     }}
 >
     <TextInput
+        id="player-name"
         labelText="Nombre del jugador"
         placeholder="Introduce el nombre del jugador..."
         bind:value={playerName}
