@@ -17,7 +17,7 @@
 
 <Theme bind:theme persist />
 
-<Header company="Peña de Fútbol" platformName="Sierra del Pozo">
+<Header company="Peña de Fútbol" platformName="Sierra del Pozo" expand>
     <svelte:fragment slot="skip-to-content">
         <SkipToContent />
     </svelte:fragment>
@@ -30,5 +30,22 @@
         />
     </HeaderUtilities>
 </Header>
+
+<style>
+    :global(body) {
+        margin: 0;
+        padding: 0;
+    }
+
+    :global(.bx--content) {
+        padding: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        :global(.bx--content) {
+            padding: 0.75rem;
+        }
+    }
+</style>
 
 {@render children()}
