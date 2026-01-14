@@ -35,9 +35,7 @@
     let numberOfTeams = $state(data.teams.length * 2 || 2);
 
     const rows = $derived(data.players);
-    const players = $derived(
-        data.players.filter((player) => selectedPlayerIds.includes(player.id))
-    );
+    const players = $derived(data.players.filter((player) => selectedPlayerIds.includes(player.id)));
 
     $effect(() => {
         fetch("/", {
@@ -102,9 +100,7 @@
 
     function updateSelectedPlayerIds(playerId) {
         if (selectedPlayerIds.includes(playerId)) {
-            selectedPlayerIds = selectedPlayerIds.filter(
-                (id) => id !== playerId
-            );
+            selectedPlayerIds = selectedPlayerIds.filter((id) => id !== playerId);
         } else {
             selectedPlayerIds = [...selectedPlayerIds, playerId];
         }
@@ -145,10 +141,20 @@
     {#if teamsArray.length > 0}
         <div class="teams-container">
             {#each Object.entries(teamsArray) as [index, teams]}
+                {@const teamANum = parseInt(index) * 2 + 1}
+                {@const teamBNum = parseInt(index) * 2 + 2}
+                {@const teamAWinPct = parseInt(
+                    teams.teamA.reduce((acc, curr) => acc + curr.victoryPercentage, 0) / teams.teamA.length
+                )}
+                {@const teamBWinPct = parseInt(
+                    teams.teamB.reduce((acc, curr) => acc + curr.victoryPercentage, 0) / teams.teamB.length
+                )}
                 <div class="team-match">
                     <div class="teams-grid">
                         <div class="team">
-                            <h3>Equipo A (Jugadores: {teams.teamA.length})</h3>
+                            <h3>
+                                Equipo {teamANum} (Jugadores: {teams.teamA.length})
+                            </h3>
                             <div class="players-list">
                                 {#each teams.teamA as player}
                                     <p class="player-name">{player.name}</p>
@@ -157,22 +163,15 @@
                             <div class="stats">
                                 <p class="stat-label">
                                     Victorias:
-                                    <strong>
-                                        {parseInt(
-                                            teams.teamA.reduce(
-                                                (acc, curr) =>
-                                                    acc +
-                                                    curr.victoryPercentage,
-                                                0
-                                            ) / teams.teamA.length
-                                        )}%
-                                    </strong>
+                                    <strong>{teamAWinPct}%</strong>
                                 </p>
                             </div>
                         </div>
 
                         <div class="team">
-                            <h3>Equipo B (Jugadores: {teams.teamB.length})</h3>
+                            <h3>
+                                Equipo {teamBNum} (Jugadores: {teams.teamB.length})
+                            </h3>
                             <div class="players-list">
                                 {#each teams.teamB as player}
                                     <p class="player-name">{player.name}</p>
@@ -181,16 +180,7 @@
                             <div class="stats">
                                 <p class="stat-label">
                                     Victorias:
-                                    <strong>
-                                        {parseInt(
-                                            teams.teamB.reduce(
-                                                (acc, curr) =>
-                                                    acc +
-                                                    curr.victoryPercentage,
-                                                0
-                                            ) / teams.teamB.length
-                                        )}%
-                                    </strong>
+                                    <strong>{teamBWinPct}%</strong>
                                 </p>
                             </div>
                         </div>
@@ -199,24 +189,21 @@
                     <div class="score-section">
                         <div class="score-inputs">
                             <NumberInput
-                                label="Goles A"
+                                label="Goles Equipo {teamANum}"
                                 value={teams.teamAScore}
                                 min={0}
-                                on:change={(e) =>
-                                    (teams.teamAScore = parseInt(e.detail))}
+                                on:change={(e) => (teams.teamAScore = parseInt(e.detail))}
                             />
                             <NumberInput
-                                label="Goles B"
+                                label="Goles Equipo {teamBNum}"
                                 value={teams.teamBScore}
                                 min={0}
-                                on:change={(e) =>
-                                    (teams.teamBScore = parseInt(e.detail))}
+                                on:change={(e) => (teams.teamBScore = parseInt(e.detail))}
                             />
                         </div>
                         <div class="score-button">
                             <Button
-                                disabled={teams.teamAScore === undefined ||
-                                    teams.teamBScore === undefined}
+                                disabled={teams.teamAScore === undefined || teams.teamBScore === undefined}
                                 on:click={() => createMatch(index)}
                             >
                                 Registrar
@@ -323,9 +310,7 @@
                             <div class="player-info">
                                 <h4>{player.name}</h4>
                                 <p class="victory-stat">
-                                    {player.victoryPercentage
-                                        ? `${parseInt(player.victoryPercentage)}%`
-                                        : "0%"} victorias
+                                    {player.victoryPercentage ? `${parseInt(player.victoryPercentage)}%` : "0%"} victorias
                                 </p>
                             </div>
                             <div class="card-actions">
@@ -356,27 +341,19 @@
                         <div class="card-stats">
                             <div class="stat">
                                 <span class="stat-label">Ganados</span>
-                                <span class="stat-value"
-                                    >{player.matchesWon}</span
-                                >
+                                <span class="stat-value">{player.matchesWon}</span>
                             </div>
                             <div class="stat">
                                 <span class="stat-label">Empatados</span>
-                                <span class="stat-value"
-                                    >{player.matchesDrawn}</span
-                                >
+                                <span class="stat-value">{player.matchesDrawn}</span>
                             </div>
                             <div class="stat">
                                 <span class="stat-label">Perdidos</span>
-                                <span class="stat-value"
-                                    >{player.matchesLost}</span
-                                >
+                                <span class="stat-value">{player.matchesLost}</span>
                             </div>
                             <div class="stat">
                                 <span class="stat-label">Total</span>
-                                <span class="stat-value"
-                                    >{player.totalMatches}</span
-                                >
+                                <span class="stat-value">{player.totalMatches}</span>
                             </div>
                         </div>
 
@@ -387,13 +364,7 @@
                                 <span>{player.goalsAgainst}</span>
                             </div>
                             <div class="checkbox">
-                                <input
-                                    type="checkbox"
-                                    checked={selectedPlayerIds.includes(
-                                        player.id
-                                    )}
-                                    readonly
-                                />
+                                <input type="checkbox" checked={selectedPlayerIds.includes(player.id)} readonly />
                             </div>
                         </div>
                     </div>
