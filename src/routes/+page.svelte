@@ -32,7 +32,7 @@
             .flat()
             .map((player) => player.id)
     );
-    let numberOfTeams = $state(2);
+    let numberOfTeams = $state(data.teams.length * 2 || 2);
 
     const rows = $derived(data.players);
     const players = $derived(
@@ -104,6 +104,7 @@
 <Content>
     <div class="controls">
         <Select
+            selected={numberOfTeams.toString()}
             labelText="¿Cuántos equipos sois?"
             on:change={(e) => (numberOfTeams = parseInt(e.target.value))}
         >
