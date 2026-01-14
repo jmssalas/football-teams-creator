@@ -26,7 +26,12 @@
     let playerToDelete = $state(undefined);
     let playerName = $state("");
     let teamsArray = $state(data.teams);
-    let selectedRowIds = $state([]);
+    let selectedRowIds = $state(
+        data.teams
+            .map((teams) => teams.teamA.concat(teams.teamB))
+            .flat()
+            .map((player) => player.id)
+    );
     let numberOfTeams = $state(2);
 
     const rows = $derived(data.players);
@@ -107,6 +112,7 @@
             <SelectItem value="6" />
         </Select>
 
+        Jugadores seleccionados: {selectedRowIds.length}
         <div class="button-group">
             <Button
                 disabled={players.length === 0}
@@ -144,7 +150,8 @@
                                         {parseInt(
                                             teams.teamA.reduce(
                                                 (acc, curr) =>
-                                                    acc + curr.victoryPercentage,
+                                                    acc +
+                                                    curr.victoryPercentage,
                                                 0
                                             ) / teams.teamA.length
                                         )}%
@@ -167,7 +174,8 @@
                                         {parseInt(
                                             teams.teamB.reduce(
                                                 (acc, curr) =>
-                                                    acc + curr.victoryPercentage,
+                                                    acc +
+                                                    curr.victoryPercentage,
                                                 0
                                             ) / teams.teamB.length
                                         )}%
