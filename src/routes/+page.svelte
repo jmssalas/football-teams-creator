@@ -438,7 +438,7 @@
 
     .team h3 {
         margin: 0 0 0.5rem 0;
-        font-size: 1.125rem;
+        font-size: 1.25rem;
     }
 
     .players-list {
@@ -448,7 +448,7 @@
 
     .player-name {
         margin: 0.25rem 0;
-        font-size: 0.875rem;
+        font-size: 1rem;
     }
 
     .stats {
@@ -512,11 +512,11 @@
         }
 
         .team h3 {
-            font-size: 1rem;
+            font-size: 1.125rem;
         }
 
         .player-name {
-            font-size: 0.8125rem;
+            font-size: 1rem;
         }
 
         .stat-label {
@@ -685,11 +685,11 @@
         }
 
         .team h3 {
-            font-size: 0.9375rem;
+            font-size: 1rem;
         }
 
         .player-name {
-            font-size: 0.75rem;
+            font-size: 0.9375rem;
         }
 
         .stat-label {
