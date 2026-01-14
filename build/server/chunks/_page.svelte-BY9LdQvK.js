@@ -1714,10 +1714,10 @@ function _page($$payload, $$props) {
   let playerToDelete = void 0;
   let playerName = "";
   let teamsArray = data.teams;
-  let selectedRowIds = data.teams.map((teams) => teams.teamA.concat(teams.teamB)).flat().map((player) => player.id);
+  let selectedPlayerIds = data.teams.map((teams) => teams.teamA.concat(teams.teamB)).flat().map((player) => player.id);
   let numberOfTeams = data.teams.length * 2 || 2;
   const rows = data.players;
-  const players = data.players.filter((player) => selectedRowIds.includes(player.id));
+  const players = data.players.filter((player) => selectedPlayerIds.includes(player.id));
   let $$settled = true;
   let $$inner_payload;
   function $$render_inner($$payload2) {
@@ -1738,7 +1738,7 @@ function _page($$payload, $$props) {
           },
           $$slots: { default: true }
         });
-        $$payload3.out += `<!----> Jugadores seleccionados: ${escape_html(selectedRowIds.length)} <div class="button-group svelte-l6nh51">`;
+        $$payload3.out += `<!----> Jugadores seleccionados: ${escape_html(selectedPlayerIds.length)} <div class="button-group svelte-l6nh51">`;
         Button($$payload3, {
           disabled: players.length === 0,
           children: ($$payload4) => {
@@ -1803,10 +1803,10 @@ function _page($$payload, $$props) {
           selectable: true,
           batchSelection: true,
           get selectedRowIds() {
-            return selectedRowIds;
+            return selectedPlayerIds;
           },
           set selectedRowIds($$value) {
-            selectedRowIds = $$value;
+            selectedPlayerIds = $$value;
             $$settled = false;
           },
           size: "compact",
@@ -1894,8 +1894,8 @@ function _page($$payload, $$props) {
         $$payload3.out += `<!----></div> <div class="cards-container svelte-l6nh51"><!--[-->`;
         for (let $$index_3 = 0, $$length = each_array_3.length; $$index_3 < $$length; $$index_3++) {
           let player = each_array_3[$$index_3];
-          $$payload3.out += `<div${attr("class", `player-card svelte-l6nh51 ${stringify([
-            selectedRowIds.includes(player.id) ? "selected" : ""
+          $$payload3.out += `<div role="button"${attr("tabindex", player.id)}${attr("class", `player-card svelte-l6nh51 ${stringify([
+            selectedPlayerIds.includes(player.id) ? "selected" : ""
           ].filter(Boolean).join(" "))}`)}><div class="card-header svelte-l6nh51"><div class="player-info svelte-l6nh51"><h4 class="svelte-l6nh51">${escape_html(player.name)}</h4> <p class="victory-stat svelte-l6nh51">${escape_html(player.victoryPercentage ? `${parseInt(player.victoryPercentage)}%` : "0%")} victorias</p></div> <div class="card-actions svelte-l6nh51">`;
           if (playerToDelete?.id === player.id) {
             $$payload3.out += "<!--[-->";
@@ -1914,7 +1914,7 @@ function _page($$payload, $$props) {
               size: "small"
             });
           }
-          $$payload3.out += `<!--]--></div></div> <div class="card-stats svelte-l6nh51"><div class="stat svelte-l6nh51"><span class="stat-label svelte-l6nh51">Ganados</span> <span class="stat-value svelte-l6nh51">${escape_html(player.matchesWon)}</span></div> <div class="stat svelte-l6nh51"><span class="stat-label svelte-l6nh51">Empatados</span> <span class="stat-value svelte-l6nh51">${escape_html(player.matchesDrawn)}</span></div> <div class="stat svelte-l6nh51"><span class="stat-label svelte-l6nh51">Perdidos</span> <span class="stat-value svelte-l6nh51">${escape_html(player.matchesLost)}</span></div> <div class="stat svelte-l6nh51"><span class="stat-label svelte-l6nh51">Total</span> <span class="stat-value svelte-l6nh51">${escape_html(player.totalMatches)}</span></div></div> <div class="card-footer svelte-l6nh51"><div class="goals svelte-l6nh51"><span>⚽ ${escape_html(player.goalsFor)}</span> <span>-</span> <span>${escape_html(player.goalsAgainst)}</span></div> <div class="checkbox svelte-l6nh51"><input type="checkbox"${attr("checked", selectedRowIds.includes(player.id), true)} class="svelte-l6nh51"></div></div></div>`;
+          $$payload3.out += `<!--]--></div></div> <div class="card-stats svelte-l6nh51"><div class="stat svelte-l6nh51"><span class="stat-label svelte-l6nh51">Ganados</span> <span class="stat-value svelte-l6nh51">${escape_html(player.matchesWon)}</span></div> <div class="stat svelte-l6nh51"><span class="stat-label svelte-l6nh51">Empatados</span> <span class="stat-value svelte-l6nh51">${escape_html(player.matchesDrawn)}</span></div> <div class="stat svelte-l6nh51"><span class="stat-label svelte-l6nh51">Perdidos</span> <span class="stat-value svelte-l6nh51">${escape_html(player.matchesLost)}</span></div> <div class="stat svelte-l6nh51"><span class="stat-label svelte-l6nh51">Total</span> <span class="stat-value svelte-l6nh51">${escape_html(player.totalMatches)}</span></div></div> <div class="card-footer svelte-l6nh51"><div class="goals svelte-l6nh51"><span>⚽ ${escape_html(player.goalsFor)}</span> <span>-</span> <span>${escape_html(player.goalsAgainst)}</span></div> <div class="checkbox svelte-l6nh51"><input type="checkbox"${attr("checked", selectedPlayerIds.includes(player.id), true)} readonly class="svelte-l6nh51"></div></div></div>`;
         }
         $$payload3.out += `<!--]--></div></div></div>`;
       },
@@ -1960,4 +1960,4 @@ function _page($$payload, $$props) {
 }
 
 export { _page as default };
-//# sourceMappingURL=_page.svelte-jB_4mADS.js.map
+//# sourceMappingURL=_page.svelte-BY9LdQvK.js.map
