@@ -1724,7 +1724,7 @@ function _page($$payload, $$props) {
     Content($$payload2, {
       children: ($$payload3) => {
         const each_array_3 = ensure_array_like(rows);
-        $$payload3.out += `<div class="controls svelte-l6nh51">`;
+        $$payload3.out += `<div class="controls svelte-o4mtdp">`;
         Select($$payload3, {
           selected: numberOfTeams.toString(),
           labelText: "¿Cuántos equipos sois?",
@@ -1738,7 +1738,7 @@ function _page($$payload, $$props) {
           },
           $$slots: { default: true }
         });
-        $$payload3.out += `<!----> Jugadores seleccionados: ${escape_html(selectedPlayerIds.length)} <div class="button-group svelte-l6nh51">`;
+        $$payload3.out += `<!----> Jugadores seleccionados: ${escape_html(selectedPlayerIds.length)} <div class="button-group svelte-o4mtdp">`;
         Button($$payload3, {
           disabled: players.length === 0,
           children: ($$payload4) => {
@@ -1756,34 +1756,38 @@ function _page($$payload, $$props) {
         if (teamsArray.length > 0) {
           $$payload3.out += "<!--[-->";
           const each_array = ensure_array_like(Object.entries(teamsArray));
-          $$payload3.out += `<div class="teams-container svelte-l6nh51"><!--[-->`;
+          $$payload3.out += `<div class="teams-container svelte-o4mtdp"><!--[-->`;
           for (let $$index_2 = 0, $$length = each_array.length; $$index_2 < $$length; $$index_2++) {
             let [index, teams] = each_array[$$index_2];
+            const teamANum = parseInt(index) * 2 + 1;
+            const teamBNum = parseInt(index) * 2 + 2;
+            const teamAWinPct = parseInt(teams.teamA.reduce((acc, curr) => acc + curr.victoryPercentage, 0) / teams.teamA.length);
+            const teamBWinPct = parseInt(teams.teamB.reduce((acc, curr) => acc + curr.victoryPercentage, 0) / teams.teamB.length);
             const each_array_1 = ensure_array_like(teams.teamA);
             const each_array_2 = ensure_array_like(teams.teamB);
-            $$payload3.out += `<div class="team-match svelte-l6nh51"><div class="teams-grid svelte-l6nh51"><div class="team svelte-l6nh51"><h3 class="svelte-l6nh51">Equipo A (Jugadores: ${escape_html(teams.teamA.length)})</h3> <div class="players-list svelte-l6nh51"><!--[-->`;
+            $$payload3.out += `<div class="team-match svelte-o4mtdp"><div class="teams-grid svelte-o4mtdp"><div class="team svelte-o4mtdp"><h3 class="svelte-o4mtdp">Equipo ${escape_html(teamANum)} (Jugadores: ${escape_html(teams.teamA.length)})</h3> <div class="players-list svelte-o4mtdp"><!--[-->`;
             for (let $$index = 0, $$length2 = each_array_1.length; $$index < $$length2; $$index++) {
               let player = each_array_1[$$index];
-              $$payload3.out += `<p class="player-name svelte-l6nh51">${escape_html(player.name)}</p>`;
+              $$payload3.out += `<p class="player-name svelte-o4mtdp">${escape_html(player.name)}</p>`;
             }
-            $$payload3.out += `<!--]--></div> <div class="stats svelte-l6nh51"><p class="stat-label svelte-l6nh51">Victorias: <strong>${escape_html(parseInt(teams.teamA.reduce((acc, curr) => acc + curr.victoryPercentage, 0) / teams.teamA.length))}%</strong></p></div></div> <div class="team svelte-l6nh51"><h3 class="svelte-l6nh51">Equipo B (Jugadores: ${escape_html(teams.teamB.length)})</h3> <div class="players-list svelte-l6nh51"><!--[-->`;
+            $$payload3.out += `<!--]--></div> <div class="stats svelte-o4mtdp"><p class="stat-label svelte-o4mtdp">Victorias: <strong>${escape_html(teamAWinPct)}%</strong></p></div></div> <div class="team svelte-o4mtdp"><h3 class="svelte-o4mtdp">Equipo ${escape_html(teamBNum)} (Jugadores: ${escape_html(teams.teamB.length)})</h3> <div class="players-list svelte-o4mtdp"><!--[-->`;
             for (let $$index_1 = 0, $$length2 = each_array_2.length; $$index_1 < $$length2; $$index_1++) {
               let player = each_array_2[$$index_1];
-              $$payload3.out += `<p class="player-name svelte-l6nh51">${escape_html(player.name)}</p>`;
+              $$payload3.out += `<p class="player-name svelte-o4mtdp">${escape_html(player.name)}</p>`;
             }
-            $$payload3.out += `<!--]--></div> <div class="stats svelte-l6nh51"><p class="stat-label svelte-l6nh51">Victorias: <strong>${escape_html(parseInt(teams.teamB.reduce((acc, curr) => acc + curr.victoryPercentage, 0) / teams.teamB.length))}%</strong></p></div></div></div> <div class="score-section svelte-l6nh51"><div class="score-inputs svelte-l6nh51">`;
+            $$payload3.out += `<!--]--></div> <div class="stats svelte-o4mtdp"><p class="stat-label svelte-o4mtdp">Victorias: <strong>${escape_html(teamBWinPct)}%</strong></p></div></div></div> <div class="score-section svelte-o4mtdp"><div class="score-inputs svelte-o4mtdp">`;
             NumberInput($$payload3, {
-              label: "Goles A",
+              label: `Goles Equipo ${stringify(teamANum)}`,
               value: teams.teamAScore,
               min: 0
             });
             $$payload3.out += `<!----> `;
             NumberInput($$payload3, {
-              label: "Goles B",
+              label: `Goles Equipo ${stringify(teamBNum)}`,
               value: teams.teamBScore,
               min: 0
             });
-            $$payload3.out += `<!----></div> <div class="score-button svelte-l6nh51">`;
+            $$payload3.out += `<!----></div> <div class="score-button svelte-o4mtdp">`;
             Button($$payload3, {
               disabled: teams.teamAScore === void 0 || teams.teamBScore === void 0,
               children: ($$payload4) => {
@@ -1797,7 +1801,7 @@ function _page($$payload, $$props) {
         } else {
           $$payload3.out += "<!--[!-->";
         }
-        $$payload3.out += `<!--]--> <div class="table-section svelte-l6nh51"><div class="desktop-view svelte-l6nh51">`;
+        $$payload3.out += `<!--]--> <div class="table-section svelte-o4mtdp"><div class="desktop-view svelte-o4mtdp">`;
         DataTable($$payload3, {
           sortable: true,
           selectable: true,
@@ -1883,7 +1887,7 @@ function _page($$payload, $$props) {
             }
           }
         });
-        $$payload3.out += `<!----></div> <div class="mobile-view svelte-l6nh51"><div class="mobile-header svelte-l6nh51"><h3 class="svelte-l6nh51">Jugadores</h3> `;
+        $$payload3.out += `<!----></div> <div class="mobile-view svelte-o4mtdp"><div class="mobile-header svelte-o4mtdp"><h3 class="svelte-o4mtdp">Jugadores</h3> `;
         Button($$payload3, {
           iconDescription: "Añadir jugador",
           children: ($$payload4) => {
@@ -1891,12 +1895,12 @@ function _page($$payload, $$props) {
           },
           $$slots: { default: true }
         });
-        $$payload3.out += `<!----></div> <div class="cards-container svelte-l6nh51"><!--[-->`;
+        $$payload3.out += `<!----></div> <div class="cards-container svelte-o4mtdp"><!--[-->`;
         for (let $$index_3 = 0, $$length = each_array_3.length; $$index_3 < $$length; $$index_3++) {
           let player = each_array_3[$$index_3];
-          $$payload3.out += `<div role="button"${attr("tabindex", player.id)}${attr("class", `player-card svelte-l6nh51 ${stringify([
+          $$payload3.out += `<div role="button"${attr("tabindex", player.id)}${attr("class", `player-card svelte-o4mtdp ${stringify([
             selectedPlayerIds.includes(player.id) ? "selected" : ""
-          ].filter(Boolean).join(" "))}`)}><div class="card-header svelte-l6nh51"><div class="player-info svelte-l6nh51"><h4 class="svelte-l6nh51">${escape_html(player.name)}</h4> <p class="victory-stat svelte-l6nh51">${escape_html(player.victoryPercentage ? `${parseInt(player.victoryPercentage)}%` : "0%")} victorias</p></div> <div class="card-actions svelte-l6nh51">`;
+          ].filter(Boolean).join(" "))}`)}><div class="card-header svelte-o4mtdp"><div class="player-info svelte-o4mtdp"><h4 class="svelte-o4mtdp">${escape_html(player.name)}</h4> <p class="victory-stat svelte-o4mtdp">${escape_html(player.victoryPercentage ? `${parseInt(player.victoryPercentage)}%` : "0%")} victorias</p></div> <div class="card-actions svelte-o4mtdp">`;
           if (playerToDelete?.id === player.id) {
             $$payload3.out += "<!--[-->";
             Button($$payload3, {
@@ -1914,7 +1918,7 @@ function _page($$payload, $$props) {
               size: "small"
             });
           }
-          $$payload3.out += `<!--]--></div></div> <div class="card-stats svelte-l6nh51"><div class="stat svelte-l6nh51"><span class="stat-label svelte-l6nh51">Ganados</span> <span class="stat-value svelte-l6nh51">${escape_html(player.matchesWon)}</span></div> <div class="stat svelte-l6nh51"><span class="stat-label svelte-l6nh51">Empatados</span> <span class="stat-value svelte-l6nh51">${escape_html(player.matchesDrawn)}</span></div> <div class="stat svelte-l6nh51"><span class="stat-label svelte-l6nh51">Perdidos</span> <span class="stat-value svelte-l6nh51">${escape_html(player.matchesLost)}</span></div> <div class="stat svelte-l6nh51"><span class="stat-label svelte-l6nh51">Total</span> <span class="stat-value svelte-l6nh51">${escape_html(player.totalMatches)}</span></div></div> <div class="card-footer svelte-l6nh51"><div class="goals svelte-l6nh51"><span>⚽ ${escape_html(player.goalsFor)}</span> <span>-</span> <span>${escape_html(player.goalsAgainst)}</span></div> <div class="checkbox svelte-l6nh51"><input type="checkbox"${attr("checked", selectedPlayerIds.includes(player.id), true)} readonly class="svelte-l6nh51"></div></div></div>`;
+          $$payload3.out += `<!--]--></div></div> <div class="card-stats svelte-o4mtdp"><div class="stat svelte-o4mtdp"><span class="stat-label svelte-o4mtdp">Ganados</span> <span class="stat-value svelte-o4mtdp">${escape_html(player.matchesWon)}</span></div> <div class="stat svelte-o4mtdp"><span class="stat-label svelte-o4mtdp">Empatados</span> <span class="stat-value svelte-o4mtdp">${escape_html(player.matchesDrawn)}</span></div> <div class="stat svelte-o4mtdp"><span class="stat-label svelte-o4mtdp">Perdidos</span> <span class="stat-value svelte-o4mtdp">${escape_html(player.matchesLost)}</span></div> <div class="stat svelte-o4mtdp"><span class="stat-label svelte-o4mtdp">Total</span> <span class="stat-value svelte-o4mtdp">${escape_html(player.totalMatches)}</span></div></div> <div class="card-footer svelte-o4mtdp"><div class="goals svelte-o4mtdp"><span>⚽ ${escape_html(player.goalsFor)}</span> <span>-</span> <span>${escape_html(player.goalsAgainst)}</span></div> <div class="checkbox svelte-o4mtdp"><input type="checkbox"${attr("checked", selectedPlayerIds.includes(player.id), true)} readonly class="svelte-o4mtdp"></div></div></div>`;
         }
         $$payload3.out += `<!--]--></div></div></div>`;
       },
@@ -1960,4 +1964,4 @@ function _page($$payload, $$props) {
 }
 
 export { _page as default };
-//# sourceMappingURL=_page.svelte-BY9LdQvK.js.map
+//# sourceMappingURL=_page.svelte-Cqdn4Bxu.js.map
