@@ -26,7 +26,7 @@
     let playerToDelete = $state(undefined);
     let playerName = $state("");
     let teamsArray = $state(data.teams);
-    let selectedRowIds = $state(
+    let selectedPlayerIds = $state(
         data.teams
             .map((teams) => teams.teamA.concat(teams.teamB))
             .flat()
@@ -36,7 +36,7 @@
 
     const rows = $derived(data.players);
     const players = $derived(
-        data.players.filter((player) => selectedRowIds.includes(player.id))
+        data.players.filter((player) => selectedPlayerIds.includes(player.id))
     );
 
     $effect(() => {
@@ -99,6 +99,16 @@
         playerToDelete = undefined;
         invalidateAll();
     }
+
+    function updateSelectedPlayerIds(playerId) {
+        if (selectedPlayerIds.includes(playerId)) {
+            selectedPlayerIds = selectedPlayerIds.filter(
+                (id) => id !== playerId
+            );
+        } else {
+            selectedPlayerIds = [...selectedPlayerIds, playerId];
+        }
+    }
 </script>
 
 <Content>
@@ -113,7 +123,7 @@
             <SelectItem value="6" />
         </Select>
 
-        Jugadores seleccionados: {selectedRowIds.length}
+        Jugadores seleccionados: {selectedPlayerIds.length}
         <div class="button-group">
             <Button
                 disabled={players.length === 0}
@@ -225,7 +235,7 @@
                 sortable
                 selectable
                 batchSelection
-                bind:selectedRowIds
+                bind:selectedRowIds={selectedPlayerIds}
                 size="compact"
                 headers={[
                     { key: "name", value: "Nombre" },
@@ -301,9 +311,13 @@
 
             <div class="cards-container">
                 {#each rows as player (player.id)}
+                    <!-- svelte-ignore a11y_click_events_have_key_events -->
                     <div
+                        role="button"
+                        tabindex={player.id}
                         class="player-card"
-                        class:selected={selectedRowIds.includes(player.id)}
+                        class:selected={selectedPlayerIds.includes(player.id)}
+                        onclick={() => updateSelectedPlayerIds(player.id)}
                     >
                         <div class="card-header">
                             <div class="player-info">
@@ -375,20 +389,10 @@
                             <div class="checkbox">
                                 <input
                                     type="checkbox"
-                                    checked={selectedRowIds.includes(player.id)}
-                                    onchange={(e) => {
-                                        if (e.target.checked) {
-                                            selectedRowIds = [
-                                                ...selectedRowIds,
-                                                player.id,
-                                            ];
-                                        } else {
-                                            selectedRowIds =
-                                                selectedRowIds.filter(
-                                                    (id) => id !== player.id
-                                                );
-                                        }
-                                    }}
+                                    checked={selectedPlayerIds.includes(
+                                        player.id
+                                    )}
+                                    readonly
                                 />
                             </div>
                         </div>
