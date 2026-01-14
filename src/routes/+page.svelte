@@ -137,7 +137,7 @@
                 <div class="team-match">
                     <div class="teams-grid">
                         <div class="team">
-                            <h3>Equipo A</h3>
+                            <h3>Equipo A (Jugadores: {teams.teamA.length})</h3>
                             <div class="players-list">
                                 {#each teams.teamA as player}
                                     <p class="player-name">{player.name}</p>
@@ -161,7 +161,7 @@
                         </div>
 
                         <div class="team">
-                            <h3>Equipo B</h3>
+                            <h3>Equipo B (Jugadores: {teams.teamB.length})</h3>
                             <div class="players-list">
                                 {#each teams.teamB as player}
                                     <p class="player-name">{player.name}</p>
