@@ -84,7 +84,9 @@ function balanceTwoTeams(players) {
 
         // If we have processed all players
         if (index >= players.length) {
-            const difference = Math.abs(vicPercA - vicPercB);
+            const percentageA = vicPercA / teamA.length || 0;
+            const percentageB = vicPercB / teamB.length || 0;
+            const difference = Math.abs(percentageA - percentageB);
             if (difference < minDifference) {
                 minDifference = difference;
                 bestDivision = { teamA: [...teamA], teamB: [...teamB] };
