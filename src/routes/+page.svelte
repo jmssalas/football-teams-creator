@@ -190,12 +190,14 @@
                         <div class="score-inputs">
                             <NumberInput
                                 label="Goles A"
+                                value={teams.teamAScore}
                                 min={0}
                                 on:change={(e) =>
                                     (teams.teamAScore = parseInt(e.detail))}
                             />
                             <NumberInput
                                 label="Goles B"
+                                value={teams.teamBScore}
                                 min={0}
                                 on:change={(e) =>
                                     (teams.teamBScore = parseInt(e.detail))}
