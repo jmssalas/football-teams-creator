@@ -97,184 +97,181 @@
 </script>
 
 <Content>
-    <Select
-        labelText="¿Cuántos equipos sois?"
-        on:change={(e) => (numberOfTeams = parseInt(e.target.value))}
-    >
-        <SelectItem value="2" />
-        <SelectItem value="4" />
-        <SelectItem value="6" />
-    </Select>
+    <div class="controls">
+        <Select
+            labelText="¿Cuántos equipos sois?"
+            on:change={(e) => (numberOfTeams = parseInt(e.target.value))}
+        >
+            <SelectItem value="2" />
+            <SelectItem value="4" />
+            <SelectItem value="6" />
+        </Select>
 
-    <Button
-        disabled={players.length === 0}
-        on:click={() => {
-            teamsArray = createTeams(players, numberOfTeams);
-        }}>Crear equipos</Button
-    >
-    <Button
-        kind="ghost"
-        icon={TrashCan}
-        iconDescription="Borrar equipos"
-        on:click={() => {
-            teamsArray = [];
-        }}
-    />
-
-    <br />
-    <br />
-    <br />
+        <div class="button-group">
+            <Button
+                disabled={players.length === 0}
+                on:click={() => {
+                    teamsArray = createTeams(players, numberOfTeams);
+                }}>Crear equipos</Button
+            >
+            <Button
+                kind="ghost"
+                icon={TrashCan}
+                iconDescription="Borrar equipos"
+                on:click={() => {
+                    teamsArray = [];
+                }}
+            />
+        </div>
+    </div>
 
     {#if teamsArray.length > 0}
-        <Grid>
+        <div class="teams-container">
             {#each Object.entries(teamsArray) as [index, teams]}
-                <Row>
-                    <Column>
-                        <h2>Equipo A</h2>
-                        {#each teams.teamA as player}
-                            <p>{player.name}</p>
-                        {/each}
-                        <br />
-                        <br />
-                        <p>
-                            <strong>
-                                Porcentaje de Victorias: {parseInt(
-                                    teams.teamA.reduce(
-                                        (acc, curr) =>
-                                            acc + curr.victoryPercentage,
-                                        0
-                                    ) / teams.teamA.length
-                                )} %
-                            </strong>
-                        </p>
-                    </Column>
+                <div class="team-match">
+                    <div class="teams-grid">
+                        <div class="team">
+                            <h3>Equipo A</h3>
+                            <div class="players-list">
+                                {#each teams.teamA as player}
+                                    <p class="player-name">{player.name}</p>
+                                {/each}
+                            </div>
+                            <div class="stats">
+                                <p class="stat-label">
+                                    Victorias:
+                                    <strong>
+                                        {parseInt(
+                                            teams.teamA.reduce(
+                                                (acc, curr) =>
+                                                    acc + curr.victoryPercentage,
+                                                0
+                                            ) / teams.teamA.length
+                                        )}%
+                                    </strong>
+                                </p>
+                            </div>
+                        </div>
 
-                    <Column>
-                        <h2>Equipo B</h2>
-                        {#each teams.teamB as player}
-                            <p>{player.name}</p>
-                        {/each}
-                        <br />
-                        <br />
-                        <p>
-                            <strong>
-                                Porcentaje de Victorias: {parseInt(
-                                    teams.teamB.reduce(
-                                        (acc, curr) =>
-                                            acc + curr.victoryPercentage,
-                                        0
-                                    ) / teams.teamB.length
-                                )} %
-                            </strong>
-                        </p>
-                    </Column>
-                </Row>
+                        <div class="team">
+                            <h3>Equipo B</h3>
+                            <div class="players-list">
+                                {#each teams.teamB as player}
+                                    <p class="player-name">{player.name}</p>
+                                {/each}
+                            </div>
+                            <div class="stats">
+                                <p class="stat-label">
+                                    Victorias:
+                                    <strong>
+                                        {parseInt(
+                                            teams.teamB.reduce(
+                                                (acc, curr) =>
+                                                    acc + curr.victoryPercentage,
+                                                0
+                                            ) / teams.teamB.length
+                                        )}%
+                                    </strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
-                <br />
-                <br />
-                <Row>
-                    <Column>
-                        <NumberInput
-                            label="Goles Equipo A"
-                            min={0}
-                            on:change={(e) =>
-                                (teams.teamAScore = parseInt(e.detail))}
-                        />
-                    </Column>
-                    <Column>
-                        <NumberInput
-                            label="Goles Equipo B"
-                            min={0}
-                            on:change={(e) =>
-                                (teams.teamBScore = parseInt(e.detail))}
-                        />
-                    </Column>
-                </Row>
-                <Row>
-                    <Column>
+                    <div class="score-section">
+                        <div class="score-inputs">
+                            <NumberInput
+                                label="Goles A"
+                                min={0}
+                                on:change={(e) =>
+                                    (teams.teamAScore = parseInt(e.detail))}
+                            />
+                            <NumberInput
+                                label="Goles B"
+                                min={0}
+                                on:change={(e) =>
+                                    (teams.teamBScore = parseInt(e.detail))}
+                            />
+                        </div>
                         <Button
                             disabled={teams.teamAScore === undefined ||
                                 teams.teamBScore === undefined}
                             on:click={() => createMatch(index)}
                         >
-                            Registrar resultado
+                            Registrar
                         </Button>
-                    </Column>
-                </Row>
-                <hr />
+                    </div>
+                </div>
             {/each}
-        </Grid>
+        </div>
     {/if}
 
-    <br />
-    <br />
-    <br />
-
-    <DataTable
-        sortable
-        selectable
-        batchSelection
-        bind:selectedRowIds
-        size="compact"
-        headers={[
-            { key: "name", value: "Nombre" },
-            { key: "matchesWon", value: "Partidos ganados" },
-            { key: "matchesDrawn", value: "Partidos empatados" },
-            { key: "matchesLost", value: "Partidos perdidos" },
-            { key: "totalMatches", value: "Total partidos" },
-            { key: "victoryPercentage", value: "Porcentaje victorias" },
-            { key: "goalsFor", value: "Goles a favor" },
-            { key: "goalsAgainst", value: "Goles en contra" },
-            { key: "buttons", value: "" },
-        ]}
-        {rows}
-    >
-        <Toolbar size="sm">
-            <span>
-                <Button
-                    icon={Add}
-                    iconDescription="Añadir jugador"
-                    on:click={() => {
-                        openPlayer = true;
-                    }}>Añadir jugador</Button
-                >
-            </span>
-        </Toolbar>
-
-        <svelte:fragment slot="cell" let:row let:cell>
-            {#if cell.key === "buttons"}
-                {#if playerToDelete?.id === row.id}
+    <div class="table-section">
+        <DataTable
+            sortable
+            selectable
+            batchSelection
+            bind:selectedRowIds
+            size="compact"
+            headers={[
+                { key: "name", value: "Nombre" },
+                { key: "matchesWon", value: "Ganados" },
+                { key: "matchesDrawn", value: "Empatados" },
+                { key: "matchesLost", value: "Perdidos" },
+                { key: "totalMatches", value: "Total" },
+                { key: "victoryPercentage", value: "Victoria %" },
+                { key: "goalsFor", value: "GF" },
+                { key: "goalsAgainst", value: "GC" },
+                { key: "buttons", value: "" },
+            ]}
+            {rows}
+        >
+            <Toolbar size="sm">
+                <span>
                     <Button
-                        tooltipPosition="right"
-                        tooltipAlignment="end"
-                        kind="danger-ghost"
-                        iconDescription="¿Seguro?"
-                        icon={Checkbox}
-                        size="small"
+                        icon={Add}
+                        iconDescription="Añadir jugador"
                         on:click={() => {
-                            deletePlayer(row.id);
-                        }}
-                    />
+                            openPlayer = true;
+                        }}>Añadir jugador</Button
+                    >
+                </span>
+            </Toolbar>
+
+            <svelte:fragment slot="cell" let:row let:cell>
+                {#if cell.key === "buttons"}
+                    {#if playerToDelete?.id === row.id}
+                        <Button
+                            tooltipPosition="right"
+                            tooltipAlignment="end"
+                            kind="danger-ghost"
+                            iconDescription="¿Seguro?"
+                            icon={Checkbox}
+                            size="small"
+                            on:click={() => {
+                                deletePlayer(row.id);
+                            }}
+                        />
+                    {:else}
+                        <Button
+                            tooltipPosition="right"
+                            tooltipAlignment="end"
+                            kind="danger-ghost"
+                            iconDescription="Eliminar jugador"
+                            icon={TrashCan}
+                            size="small"
+                            on:click={() => {
+                                playerToDelete = row;
+                            }}
+                        />
+                    {/if}
+                {:else if cell.key === "victoryPercentage"}
+                    {cell.value ? `${parseInt(cell.value)}%` : "0%"}
                 {:else}
-                    <Button
-                        tooltipPosition="right"
-                        tooltipAlignment="end"
-                        kind="danger-ghost"
-                        iconDescription="Eliminar jugador"
-                        icon={TrashCan}
-                        size="small"
-                        on:click={() => {
-                            playerToDelete = row;
-                        }}
-                    />
+                    {cell.value ?? ""}
                 {/if}
-            {:else if cell.key === "victoryPercentage"}
-                {cell.value ? `${parseInt(cell.value)} %` : "0 %"}
-            {:else}
-                {cell.value ?? ""}
-            {/if}
-        </svelte:fragment>
-    </DataTable>
+            </svelte:fragment>
+        </DataTable>
+    </div>
 </Content>
 
 <!-- Modal for adding a new player -->
@@ -292,3 +289,176 @@
         bind:value={playerName}
     />
 </Modal>
+
+<style>
+    :global(.bx--content) {
+        max-width: 100%;
+    }
+
+    .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .teams-container {
+        margin: 2rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .team-match {
+        border: 1px solid var(--cds-border-subtle-01);
+        border-radius: 0.25rem;
+        padding: 1rem;
+    }
+
+    .teams-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .team {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .team h3 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.125rem;
+    }
+
+    .players-list {
+        flex: 1;
+        margin-bottom: 1rem;
+    }
+
+    .player-name {
+        margin: 0.25rem 0;
+        font-size: 0.875rem;
+    }
+
+    .stats {
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--cds-border-subtle-01);
+    }
+
+    .stat-label {
+        margin: 0.25rem 0;
+        font-size: 0.875rem;
+    }
+
+    .score-section {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-end;
+    }
+
+    .score-inputs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        flex: 1;
+    }
+
+    .table-section {
+        margin-top: 3rem;
+        margin-bottom: 2rem;
+        overflow-x: auto;
+    }
+
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+        .controls {
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .team-match {
+            padding: 0.75rem;
+        }
+
+        .teams-grid {
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .team h3 {
+            font-size: 1rem;
+        }
+
+        .player-name {
+            font-size: 0.8125rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+        }
+
+        .score-section {
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .score-inputs {
+            width: 100%;
+        }
+
+        :global(.bx--data-table__header-row) {
+            font-size: 0.7rem;
+        }
+
+        :global(.bx--data-table__cell) {
+            padding: 0.5rem;
+            font-size: 0.75rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .teams-grid {
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+        }
+
+        .team h3 {
+            font-size: 0.9375rem;
+        }
+
+        .player-name {
+            font-size: 0.75rem;
+        }
+
+        .stat-label {
+            font-size: 0.6875rem;
+        }
+
+        .button-group {
+            gap: 0.25rem;
+        }
+
+        :global(.bx--btn) {
+            min-height: 2rem;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        :global(.bx--data-table__header-row) {
+            font-size: 0.65rem;
+        }
+
+        :global(.bx--data-table__cell) {
+            padding: 0.25rem;
+            font-size: 0.65rem;
+        }
+    }
+</style>
