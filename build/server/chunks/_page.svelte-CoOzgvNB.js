@@ -1819,7 +1819,7 @@ function _page($$payload, $$props) {
             { key: "matchesWon", value: "Ganados" },
             { key: "matchesDrawn", value: "Empatados" },
             { key: "matchesLost", value: "Perdidos" },
-            { key: "totalMatches", value: "Total" },
+            { key: "totalPoints", value: "Puntos" },
             { key: "victoryPercentage", value: "Victoria %" },
             { key: "goalsFor", value: "GF" },
             { key: "goalsAgainst", value: "GC" },
@@ -1918,7 +1918,7 @@ function _page($$payload, $$props) {
               size: "small"
             });
           }
-          $$payload3.out += `<!--]--></div></div> <div class="card-stats svelte-o4mtdp"><div class="stat svelte-o4mtdp"><span class="stat-label svelte-o4mtdp">Ganados</span> <span class="stat-value svelte-o4mtdp">${escape_html(player.matchesWon)}</span></div> <div class="stat svelte-o4mtdp"><span class="stat-label svelte-o4mtdp">Empatados</span> <span class="stat-value svelte-o4mtdp">${escape_html(player.matchesDrawn)}</span></div> <div class="stat svelte-o4mtdp"><span class="stat-label svelte-o4mtdp">Perdidos</span> <span class="stat-value svelte-o4mtdp">${escape_html(player.matchesLost)}</span></div> <div class="stat svelte-o4mtdp"><span class="stat-label svelte-o4mtdp">Total</span> <span class="stat-value svelte-o4mtdp">${escape_html(player.totalMatches)}</span></div></div> <div class="card-footer svelte-o4mtdp"><div class="goals svelte-o4mtdp"><span>⚽ ${escape_html(player.goalsFor)}</span> <span>-</span> <span>${escape_html(player.goalsAgainst)}</span></div> <div class="checkbox svelte-o4mtdp"><input type="checkbox"${attr("checked", selectedPlayerIds.includes(player.id), true)} readonly class="svelte-o4mtdp"></div></div></div>`;
+          $$payload3.out += `<!--]--></div></div> <div class="card-stats svelte-o4mtdp"><div class="stat svelte-o4mtdp"><span class="stat-label svelte-o4mtdp">Ganados</span> <span class="stat-value svelte-o4mtdp">${escape_html(player.matchesWon)}</span></div> <div class="stat svelte-o4mtdp"><span class="stat-label svelte-o4mtdp">Empatados</span> <span class="stat-value svelte-o4mtdp">${escape_html(player.matchesDrawn)}</span></div> <div class="stat svelte-o4mtdp"><span class="stat-label svelte-o4mtdp">Perdidos</span> <span class="stat-value svelte-o4mtdp">${escape_html(player.matchesLost)}</span></div> <div class="stat svelte-o4mtdp"><span class="stat-label svelte-o4mtdp">Puntos</span> <span class="stat-value svelte-o4mtdp">${escape_html(player.totalPoints)}</span></div></div> <div class="card-footer svelte-o4mtdp"><div class="goals svelte-o4mtdp"><span>⚽ ${escape_html(player.goalsFor)}</span> <span>-</span> <span>${escape_html(player.goalsAgainst)}</span></div> <div class="checkbox svelte-o4mtdp"><input type="checkbox"${attr("checked", selectedPlayerIds.includes(player.id), true)} readonly class="svelte-o4mtdp"></div></div></div>`;
         }
         $$payload3.out += `<!--]--></div></div></div>`;
       },
@@ -1964,4 +1964,4 @@ function _page($$payload, $$props) {
 }
 
 export { _page as default };
-//# sourceMappingURL=_page.svelte-Cqdn4Bxu.js.map
+//# sourceMappingURL=_page.svelte-CoOzgvNB.js.map

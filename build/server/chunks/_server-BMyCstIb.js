@@ -6,6 +6,9 @@ import 'drizzle-orm/better-sqlite3';
 import 'better-sqlite3';
 import 'drizzle-orm/sqlite-core';
 
+const WIN_POINTS = 3;
+const DRAW_POINTS = 1;
+const LOSS_POINTS = 0;
 async function POST({ request }) {
   const player = await request.json();
   await db.insert(players).values(player);
@@ -65,8 +68,9 @@ async function GET() {
     matchesLost: sq.matchesLost,
     goalsFor: sq.goalsFor,
     goalsAgainst: sq.goalsAgainst,
-    totalMatches: sql`${sq.matchesWon} + ${sq.matchesDrawn} + ${sq.matchesLost}`.as(
-      "totalMatches"
+    totalMatches: sql`${sq.matchesWon} + ${sq.matchesDrawn} + ${sq.matchesLost}`.as("totalMatches"),
+    totalPoints: sql`(${sq.matchesWon} * ${WIN_POINTS}) + (${sq.matchesDrawn} * ${DRAW_POINTS}) + (${sq.matchesLost} * ${LOSS_POINTS})`.as(
+      "totalPoints"
     ),
     victoryPercentage: sql`CASE
                 WHEN (${sq.matchesWon} + ${sq.matchesDrawn} + ${sq.matchesLost}) = 0 THEN 0
@@ -77,4 +81,4 @@ async function GET() {
 }
 
 export { DELETE, GET, POST };
-//# sourceMappingURL=_server-CiEzNw5a.js.map
+//# sourceMappingURL=_server-BMyCstIb.js.map
