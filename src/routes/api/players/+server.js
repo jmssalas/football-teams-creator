@@ -5,6 +5,10 @@ import { players, matches, matchParticipants } from "$lib/server/db/schema.js";
 import { json } from "@sveltejs/kit";
 import { eq, sql } from "drizzle-orm";
 
+const WIN_POINTS = 3;
+const DRAW_POINTS = 1;
+const LOSS_POINTS = 0;
+
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ request }) {
     const player = await request.json();
@@ -77,9 +81,10 @@ export async function GET() {
             matchesLost: sq.matchesLost,
             goalsFor: sq.goalsFor,
             goalsAgainst: sq.goalsAgainst,
-            totalMatches:
-                sql`${sq.matchesWon} + ${sq.matchesDrawn} + ${sq.matchesLost}`.as(
-                    "totalMatches"
+            totalMatches: sql`${sq.matchesWon} + ${sq.matchesDrawn} + ${sq.matchesLost}`.as("totalMatches"),
+            totalPoints:
+                sql`(${sq.matchesWon} * ${WIN_POINTS}) + (${sq.matchesDrawn} * ${DRAW_POINTS}) + (${sq.matchesLost} * ${LOSS_POINTS})`.as(
+                    "totalPoints"
                 ),
             victoryPercentage: sql`CASE
                 WHEN (${sq.matchesWon} + ${sq.matchesDrawn} + ${sq.matchesLost}) = 0 THEN 0

@@ -229,7 +229,7 @@
                     { key: "matchesWon", value: "Ganados" },
                     { key: "matchesDrawn", value: "Empatados" },
                     { key: "matchesLost", value: "Perdidos" },
-                    { key: "totalMatches", value: "Total" },
+                    { key: "totalPoints", value: "Puntos" },
                     { key: "victoryPercentage", value: "Victoria %" },
                     { key: "goalsFor", value: "GF" },
                     { key: "goalsAgainst", value: "GC" },
@@ -352,8 +352,8 @@
                                 <span class="stat-value">{player.matchesLost}</span>
                             </div>
                             <div class="stat">
-                                <span class="stat-label">Total</span>
-                                <span class="stat-value">{player.totalMatches}</span>
+                                <span class="stat-label">Puntos</span>
+                                <span class="stat-value">{player.totalPoints}</span>
                             </div>
                         </div>
 

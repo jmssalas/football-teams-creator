@@ -7,5 +7,6 @@ type Player = {
     goalsFor: number;
     goalsAgainst: number;
     totalMatches: number;
+    totalPoints: number;
     victoryPercentage: number;
 };
