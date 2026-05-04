@@ -12,6 +12,11 @@ const WIN_POINTS = 3;
 const TIE_POINTS = 1;
 
 /** @type {import('./$types').RequestHandler} */
+export async function GET({ request }) {
+    return json(true);
+}
+
+/** @type {import('./$types').RequestHandler} */
 export async function POST({ request }) {
     const { players, tie, setTeams, teams } = await request.json();
     if (players) {

@@ -10,6 +10,9 @@ import 'drizzle-orm/sqlite-core';
 const TEAMS_FILEPATH = "./teams.json";
 const WIN_POINTS = 3;
 const TIE_POINTS = 1;
+async function GET({ request }) {
+  return json(true);
+}
 async function POST({ request }) {
   const { players: players2, tie, setTeams, teams } = await request.json();
   if (players2) {
@@ -29,5 +32,5 @@ async function win(wPlayers, points) {
   }
 }
 
-export { POST };
-//# sourceMappingURL=_server-DGYadRHA.js.map
+export { GET, POST };
+//# sourceMappingURL=_server-W0_UFmCr.js.map
