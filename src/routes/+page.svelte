@@ -38,7 +38,7 @@
     const players = $derived(data.players.filter((player) => selectedPlayerIds.includes(player.id)));
 
     $effect(() => {
-        fetch("/", {
+        fetch("/api/teams", {
             method: "POST",
             body: JSON.stringify({ teams: teamsArray }),
             headers: {
